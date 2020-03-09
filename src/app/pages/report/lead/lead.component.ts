@@ -107,13 +107,6 @@ export class LeadComponent implements OnInit {
         }
       )
   }
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
-  }
   export2Csv(): void {
     const replacer = (key, value) => value === null ? '' : value; // specify how you want to handle null values here
     const header = Object.keys(this.leads[0]);

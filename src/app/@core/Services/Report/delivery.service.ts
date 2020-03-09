@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class DeliveryService {
-  private _getDelivery = `${environment.apiUrl}api/reportdelivery/search/1/25`;
+  private _getDelivery = `${environment.apiUrl + environment.urlPages.delivery.deliveryreport}`;
 
   constructor(private http: HttpClient) { }
 

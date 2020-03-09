@@ -10,5 +10,32 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/tms/'  
+  apiUrl: 'http://localhost:8080/tms/',
+  urlPages: {
+    lead: {
+      leadreport: 'api/reportincominglead/search/1/25'
+    },
+    delivery: {
+      deliveryreport: 'api/reportdelivery/search/1/25'
+    },
+    rescueperformance: {
+      performancereport: 'api/reportRescueAgentPerformanceDaily/search',
+      AllGroupByOrgId: 'api/orGroup/getAllGroupByOrgId',
+      CsAgentByGroupId: 'api/orGroup/getCsAgentByGroupId'
+    },
+    marketingsummary: {
+      summaryreport: 'api/reportMaketingSummary/searchListByDto',
+      export: 'api/filedownload/exportExcelReportMarketingSummary'
+    },
+    campaigncreated: {
+      createdreport: 'api/reportCpByCreatedDate/search',
+      export: 'api/filedownload/ReportCampaignByCreateDate',
+      allcampaign: 'api/cpCampaign/getAllByCurrentUserLogin'
+    },
+    campaignupdated: {
+      updatedreport: 'api/reportCpByUpdatedDate/search',
+      export: 'api/filedownload/ReportCampaignByUpdatedDate',
+      allcampaign: 'api/cpCampaign/getAllByCurrentUserLogin'
+    }
+  }  
 };

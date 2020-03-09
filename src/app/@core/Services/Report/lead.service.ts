@@ -4,8 +4,7 @@ import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class LeadService {
-  private _loginUrl = `${environment.apiUrl}oauth/token`;
-  private _getLead = `${environment.apiUrl}api/reportincominglead/search/1/25`;
+  private _getLead = `${environment.apiUrl + environment.urlPages.lead.leadreport}`;
 
   constructor(private http: HttpClient) { }
 

@@ -1,0 +1,242 @@
+<nb-card>
+    <nb-card-header>
+        <div>
+            <span>Campain Created</span>
+        </div>
+        <nb-card-body>
+            <input nbInput placeholder="Date (from - to)" [nbDatepicker]="rangepicker" [(ngModel)]="date">
+            <nb-rangepicker #rangepicker></nb-rangepicker>
+            <nb-card-body>
+                <nb-select multiple placeholder="All Campaign" [(ngModel)]="searchDto.listCpId" style="min-width: 220px;">
+                    <nb-option *ngFor="let currentData of listCampaing" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
+                </nb-select>
+            </nb-card-body>
+            <nb-actions size="small" style="float: right;">
+                <nb-action (click)="searchByDto()" style="cursor: pointer;">
+                    <nb-icon class="action-icon" icon="search-outline"></nb-icon>
+                    <span>Search</span>
+                </nb-action>
+                <nb-action style="cursor: pointer;" (click)="exportReport()" file-name="'ReportMarketingSummary.xls'" file-download="myBlobObjectExcel">
+                    <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
+                    <span>Export Excel</span>
+                </nb-action>
+            </nb-actions>
+        </nb-card-body>
+    </nb-card-header>
+    <nb-card-body>
+        <table class="table table-hover table-bordered ​">
+            <tbody>
+                <tr>
+                    <td class="text-left bold bold" style="width:300px;">
+                        <span>User online</span>
+                    </td>
+                    <td style="width:25%;"></td>
+                    <td class="text-right" style="width:25%;">
+                        <span [textContent]="((data.userOnline) > 0 ? (data.userOnline | number) : 0)"></span>
+                    </td>
+                    <td style="width:25%;"></td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Fresh leads</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.totalDayLead) > 0 ? (data.totalDayLead | number) : 0)"></span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Approved</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayApproved) > 0 ? (data.dayApproved | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayApproved / data.totalDayLead) *100) > 0 ? ((data.dayApproved / data.totalDayLead) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Delivered</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayDelivered) > 0 ? (data.dayDelivered | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayDelivered / data.dayApproved) *100) > 0 ? ((data.dayDelivered / data.dayApproved) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Intransit</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayIntransit) > 0 ? (data.dayIntransit | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayIntransit / data.dayApproved) *100) > 0 ? ((data.dayIntransit / data.dayApproved) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Returned</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayReturned) > 0 ? (data.dayReturned | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayReturned / data.dayApproved) *100) > 0 ? ((data.dayReturned / data.dayApproved) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Delay</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayDelay) > 0 ? (data.dayDelay | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayDelay / data.dayApproved) *100)>0 ? ((data.dayDelay / data.dayApproved) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Unanswered call</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayUncall) > 0 ? (data.dayUncall | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayUncall / data.totalDayLead) *100) > 0 ? ((data.dayUncall / data.totalDayLead) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>1-2 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayUncall12Times) > 0 ? (data.dayUncall12Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayUncall12Times / data.dayUncall) *100) > 0 ? ((data.dayUncall12Times / data.dayUncall) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>3-5 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayUncall35Times) > 0 ? (data.dayUncall35Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayUncall35Times / data.dayUncall) *100) > 0 ? ((data.dayUncall35Times / data.dayUncall) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>6-10 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayUncall610Times) > 0 ? (data.dayUncall610Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayUncall610Times / data.dayUncall) *100) > 0 ? ((data.dayUncall610Times / data.dayUncall) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>>10 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayUncallMore10Times) > 0 ? (data.dayUncallMore10Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayUncallMore10Times / data.dayUncall) *100) > 0 ? ((data.dayUncallMore10Times / data.dayUncall) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Callback</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayCallback) > 0 ? (data.dayCallback | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayCallback / data.totalDayLead) *100) > 0 ? ((data.dayCallback / data.totalDayLead) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Rejected</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayRejected) > 0 ? (data.dayRejected | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayRejected / data.totalDayLead) *100) > 0 ? ((data.dayRejected / data.totalDayLead) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Trash</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayTrash) > 0 ? (data.dayTrash | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayTrash / data.totalDayLead) *100) > 0 ? ((data.dayTrash / data.totalDayLead) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>New leads</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayNew) > 0 ? (data.dayNew | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.dayNew / data.totalDayLead) *100) > 0 ? ((data.dayNew / data.totalDayLead) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Total order value</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayTotalSoAmount) > 0 ? (data.dayTotalSoAmount | number) : 0)"></span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Average order value</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.dayTotalSoAmount / data.dayApproved) *100/100) > 0 ? ((data.dayTotalSoAmount / data.dayApproved) *100/100 | number :'1.2-2') : 0"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </nb-card-body>
+</nb-card>

@@ -1,0 +1,39 @@
+<nb-card>
+    <nb-card-header>
+      <div>
+        <span>Rescue Performance</span>
+      </div>
+      <div>
+        <nb-card-body>
+            <input nbInput placeholder="Date (from - to)" [nbDatepicker]="rangepicker" [(ngModel)]="date">
+            <nb-rangepicker #rangepicker></nb-rangepicker>
+            <nb-card-body>
+                <nb-select multiple placeholder="CS Group" [(ngModel)]="searchDto.listGroupId" (ngModelChange)="getCsAgentByGroupId()" style="min-width: 220px;">
+                    <nb-option *ngFor="let currentData of listOrGroup" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
+                </nb-select>
+            </nb-card-body>
+            <nb-card-body>
+                <nb-select multiple placeholder="CS Group" [(ngModel)]="searchDto.listCsAgentId" (ngModelChange)="searchByDto()" style="min-width: 220px;">
+                    <nb-option *ngFor="let currentData of listCsAgent" value="{{ currentData.userId }}">{{ currentData.fullname }}</nb-option>
+                </nb-select>
+            </nb-card-body>
+            <nb-actions size="small" style="float: right;">
+                <nb-action (click)="searchByDto()" style="cursor: pointer;">
+                    <nb-icon class="action-icon" icon="search-outline"></nb-icon>
+                    <span>Search</span>
+                </nb-action>
+            </nb-actions>
+            
+        </nb-card-body>
+        
+        
+        <!-- <button class="btn btn-primary" (click)="searchByDto()" style="float: right;">Search</button> -->
+      </div>
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [settings]="settings" [source]="source">
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+  

@@ -54,6 +54,10 @@ import { SecurityCamerasService } from './mock/security-cameras.service';
 import { MockDataModule } from './mock/mock-data.module';
 import { LeadService } from './Services/Report/lead.service';
 import { DeliveryService } from './Services/Report/delivery.service';
+import { RescuePerformanceService } from './Services/Report/rescueperformance.service';
+import { MarketingSummaryService } from './Services/Report/marketingsummary.service';
+import { CampaignCreatedService } from './Services/Report/campaigncreated.service';
+import { CampaignUpdatedService } from './Services/Report/campaignupdated.service';
 
 const socialLinks = [
   {
@@ -167,7 +171,11 @@ export class CoreModule {
       providers: [
         ...NB_CORE_PROVIDERS,
         LeadService,
-        DeliveryService
+        DeliveryService,
+        RescuePerformanceService,
+        MarketingSummaryService,
+        CampaignCreatedService,
+        CampaignUpdatedService
       ],
     };
   }

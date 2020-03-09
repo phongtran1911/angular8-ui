@@ -1,0 +1,70 @@
+<nb-card>
+  <nb-card-header>
+    <div>
+      <span>Marketing Summary</span>
+    </div>
+    <div>
+      <nb-card-body>
+          <input nbInput placeholder="Date (from - to)" [nbDatepicker]="rangepicker" [(ngModel)]="date">
+          <nb-rangepicker #rangepicker></nb-rangepicker>
+          <nb-card-body>
+            <input type="text" nbInput placeholder="Search by Source..." [(ngModel)]="searchDto.source">
+          </nb-card-body>
+          
+          <nb-actions size="small" style="float: right;">
+              <nb-action (click)="searchByDto()" style="cursor: pointer;">
+                  <nb-icon class="action-icon" icon="search-outline"></nb-icon>
+                  <span>Search</span>
+              </nb-action>
+              <nb-action style="cursor: pointer;" (click)="exportReport()" file-name="'ReportMarketingSummary.xls'" file-download="myBlobObjectExcel">
+                  <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
+                  <span>Export Excel</span>
+              </nb-action>
+          </nb-actions>
+          
+      </nb-card-body>
+      
+      
+      <!-- <button class="btn btn-primary" (click)="searchByDto()" style="float: right;">Search</button> -->
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)">
+
+      <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns"></tr>
+      <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns"></tr>
+
+      <ng-container [nbTreeGridColumnDef]="customColumn">
+        <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(customColumn)" *nbTreeGridHeaderCellDef>
+          {{customColumn}}
+        </th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          <ngx-fs-icon [kind]="row.data.kind" [expanded]="row.expanded"></ngx-fs-icon>
+          {{row.data[customColumn]}}
+        </td>
+      </ng-container>
+
+      <ng-container *ngFor="let column of defaultColumns; let index = index"
+                    [nbTreeGridColumnDef]="column"
+                    [showOn]="getShowOn(index)">
+        <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
+          {{column}}
+        </th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || '-'}}</td>
+      </ng-container>      
+    </table>
+    <table class="table margin-top-20​ table-hover" *ngIf="data != null && data.items != null && data.items.length > 0">
+      <tbody>
+          <tr>
+              <th scope="col" class="text-left" style="width: 100px;">Total</th>
+              <th scope="col" style="width: 77.6px;"></th>
+              <th scope="col" class="text-right" style="width: 80.8px;"><span [textContent]="data.totalNew | number"></span></th>
+              <th scope="col" class="text-right" style="width: 112px;"><span [textContent]="data.totalApproved | number"></span></th>
+              <th scope="col" class="text-right" style="width: 103.2px;"><span [textContent]="data.totalRejected | number"></span></th>
+              <th scope="col" class="text-right" style="width: 76.8px;"><span [textContent]="data.total | number"></span></th>
+          </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>

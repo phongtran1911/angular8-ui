@@ -4,6 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReportComponent } from './report.component';
 import { LeadComponent } from './lead/lead.component';
 import { DeliveryComponent } from './delivery/delivery.component';
+import { RescuePerformanceComponent } from './rescueperformance/performance.component';
+import { MarketingSummaryComponent } from './marketingsummary/marketingsummary.component';
+import { CampaignCreatedComponent } from './campaigncreated/campaigncreated.component';
+import { CampaignUpdatedComponent } from './campaignupdated/campaignupdated.component';
 
 
 const routes: Routes = [{
@@ -17,6 +21,22 @@ const routes: Routes = [{
     {
       path: 'delivery',
       component: DeliveryComponent
+    },
+    {
+      path: 'rescueperformance',
+      component: RescuePerformanceComponent
+    },
+    {
+      path: 'marketingsummary',
+      component: MarketingSummaryComponent
+    },
+    {
+      path: 'campaigncreated',
+      component: CampaignCreatedComponent
+    },
+    {
+      path: 'campaignupdated',
+      component: CampaignUpdatedComponent
     }
   ],
 }];
@@ -30,5 +50,9 @@ export class ReportRoutingModule { }
 export const routedComponents = [
   ReportComponent,
   LeadComponent,
-  DeliveryComponent
+  DeliveryComponent,
+  RescuePerformanceComponent,
+  MarketingSummaryComponent,
+  CampaignCreatedComponent,
+  CampaignUpdatedComponent
 ];

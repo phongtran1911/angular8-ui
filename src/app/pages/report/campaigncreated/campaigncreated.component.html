@@ -1,0 +1,242 @@
+<nb-card>
+    <nb-card-header>
+        <div>
+            <span>Campain Created</span>
+        </div>
+        <nb-card-body>
+            <input nbInput placeholder="Date (from - to)" [nbDatepicker]="rangepicker" [(ngModel)]="date">
+            <nb-rangepicker #rangepicker></nb-rangepicker>
+            <nb-card-body>
+                <nb-select multiple placeholder="All Campaign" [(ngModel)]="searchDto.listCpId" style="min-width: 220px;">
+                    <nb-option *ngFor="let currentData of listCampaing" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
+                </nb-select>
+            </nb-card-body>
+            <nb-actions size="small" style="float: right;">
+                <nb-action (click)="searchByDto()" style="cursor: pointer;">
+                    <nb-icon class="action-icon" icon="search-outline"></nb-icon>
+                    <span>Search</span>
+                </nb-action>
+                <nb-action style="cursor: pointer;" (click)="exportReport()" file-name="'ReportMarketingSummary.xls'" file-download="myBlobObjectExcel">
+                    <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
+                    <span>Export Excel</span>
+                </nb-action>
+            </nb-actions>
+        </nb-card-body>
+    </nb-card-header>
+    <nb-card-body>
+        <table class="table table-hover table-bordered ​">
+            <tbody>
+                <tr>
+                    <td class="text-left bold bold" style="width:300px;">
+                        <span>User online</span>
+                    </td>
+                    <td style="width:25%;"></td>
+                    <td class="text-right" style="width:25%;">
+                        <span [textContent]="((data.userOnline) > 0 ? (data.userOnline | number) : 0)"></span>
+                    </td>
+                    <td style="width:25%;"></td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Fresh leads</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.totalFreshLead) > 0 ? (data.totalFreshLead | number) : 0)"></span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Approved</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshApproved) > 0 ? (data.freshApproved | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshApproved / data.totalFreshLead) *100) > 0 ? ((data.freshApproved / data.totalFreshLead) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Delivered</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshDelivered) > 0 ? (data.freshDelivered | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshDelivered / data.freshApproved) *100) > 0 ? ((data.freshDelivered / data.freshApproved) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Intransit</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshIntransit) > 0 ? (data.freshIntransit | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshIntransit / data.freshApproved) *100) > 0 ? ((data.freshIntransit / data.freshApproved) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Returned</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshReturned) > 0 ? (data.freshReturned | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshReturned / data.freshApproved) *100) > 0 ? ((data.freshReturned / data.freshApproved) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>Delay</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshDelay) > 0 ? (data.freshDelay | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshDelay / data.freshApproved) *100)>0 ? ((data.freshDelay / data.freshApproved) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Unanswered call</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshUncall) > 0 ? (data.freshUncall | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshUncall / data.totalFreshLead) *100) > 0 ? ((data.freshUncall / data.totalFreshLead) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>1-2 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshUncall12Times) > 0 ? (data.freshUncall12Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshUncall12Times / data.freshUncall) *100) > 0 ? ((data.freshUncall12Times / data.freshUncall) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>3-5 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshUncall35Times) > 0 ? (data.freshUncall35Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshUncall35Times / data.freshUncall) *100) > 0 ? ((data.freshUncall35Times / data.freshUncall) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>6-10 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshUncall610Times) > 0 ? (data.freshUncall610Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshUncall610Times / data.freshUncall) *100) > 0 ? ((data.freshUncall610Times / data.freshUncall) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="text-left bold">
+                        <span>>10 times</span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshUncallMore10Times) > 0 ? (data.freshUncallMore10Times | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshUncallMore10Times / data.freshUncall) *100) > 0 ? ((data.freshUncallMore10Times / data.freshUncall) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Callback</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshCallback) > 0 ? (data.freshCallback | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshCallback / data.totalFreshLead) *100) > 0 ? ((data.freshCallback / data.totalFreshLead) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Rejected</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshRejected) > 0 ? (data.freshRejected | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshRejected / data.totalFreshLead) *100) > 0 ? ((data.freshRejected / data.totalFreshLead) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Trash</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshTrash) > 0 ? (data.freshTrash | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshTrash / data.totalFreshLead) *100) > 0 ? ((data.freshTrash / data.totalFreshLead) *100 | number :'1.2-2') :0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>New leads</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshNew) > 0 ? (data.freshNew | number) : 0)"></span>
+                    </td>
+                    <td class="text-right">
+                        <span [textContent]="(((data.freshNew / data.totalFreshLead) *100) > 0 ? ((data.freshNew / data.totalFreshLead) *100 | number :'1.2-2') : 0) + '%'"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Total order value</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshTotalSoAmount) > 0 ? (data.freshTotalSoAmount | number) : 0)"></span>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="text-left bold">
+                        <span>Average order value</span>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                        <span [textContent]="((data.freshTotalSoAmount / data.freshApproved) *100/100) > 0 ? ((data.freshTotalSoAmount / data.freshApproved) * 100/100 | number :'1.2-2') : 0"></span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </nb-card-body>
+</nb-card>

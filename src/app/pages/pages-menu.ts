@@ -36,7 +36,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Inhouse Marketing',
-        link: '/pages/report/marketinginhouse'
+        link: '/pages/report/marketinginhouse',
+        hidden: true
       }
     ]
   },
