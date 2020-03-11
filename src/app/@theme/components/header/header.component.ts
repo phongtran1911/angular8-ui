@@ -6,6 +6,7 @@ import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../@core/Services/Auth/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'ngx-header',
@@ -17,7 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
-  public userInfo;
+  public userInfo = [];
   themes = [
     {
       value: 'default',
@@ -47,12 +48,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
-              private _auth: AuthService) {
+              private _auth: AuthService,
+              private cookies: CookieService) {
   }
 
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
-
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users.nick);
@@ -78,14 +79,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
           map(({ item: { title } }) => title),
         )
         .subscribe(title => this._auth.logoutUser());
-      this._auth.getCurrentUser()
-        .subscribe(
-          res => {
-            localStorage.setItem('userId', res.userId);
-            this.userInfo = res;
-          },
-          err => console.log(err)
-        )
+        this._auth.getCurrentUser()
+              .subscribe(
+                res => {
+                  localStorage.setItem('userId', res.userId); 
+                  this.cookies.set('currentUser', JSON.stringify(res));
+                  this.userInfo = res;                              
+                },
+                err => {
+                  localStorage.removeItem('token')
+                  this.cookies.delete('currentUser')
+                  window.location.href = 'auth/login';
+                }    
+              );
   }
 
   ngOnDestroy() {

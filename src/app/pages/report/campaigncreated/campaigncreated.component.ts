@@ -1,33 +1,21 @@
 import { Component,  OnInit } from '@angular/core';
-import { ToasterConfig } from 'angular2-toaster';
 import { CampaignCreatedService } from '../../../@core/Services/Report/campaigncreated.service';
-import {
-    NbComponentStatus,
-    NbGlobalPhysicalPosition,
-    NbGlobalPosition,
-    NbToastrService,
-  } from '@nebular/theme';
 import * as moment from 'moment';
-import 'style-loader!angular2-toaster/toaster.css';
+import { FunctionAllService } from '../../../@core/utils/index';
 @Component({
     selector: 'ngx-campaigncreated',
     templateUrl: './campaigncreated.component.html',
     styleUrls: ['./campaigncreated.component.scss'],
   })
   export class CampaignCreatedComponent implements OnInit {
-    config: ToasterConfig;
-    destroyByClick = true;
-    duration = 3000;
-    hasIcon = true;
-    position: NbGlobalPosition = NbGlobalPhysicalPosition.BOTTOM_RIGHT;
-    preventDuplicates = false;
-    status: NbComponentStatus = 'warning';
+    loading = false;
     ngOnInit(): void {
         this.date.start.setHours(0,0,0,0);
         this.date.end.setHours(23,59,59,999);  
         this.getAllCampaing();
     }
-    constructor(private _call: CampaignCreatedService,private toastrService: NbToastrService){
+    constructor(private _call: CampaignCreatedService,
+        private _func: FunctionAllService,){
 
     }
     listCampaing;
@@ -51,6 +39,7 @@ import 'style-loader!angular2-toaster/toaster.css';
         userOnline: 0
     };
     searchByDto() {
+        this.loading = true;
         this.data = {
             userOnline: 0      
 
@@ -65,31 +54,16 @@ import 'style-loader!angular2-toaster/toaster.css';
         }
         if(this.searchDto.listCpId.length == 0)
         {
-            this.showToast(this.status, "Hi There!", "Choose a campaign, please!");
+            this._func.showToast('warning', "Hi There!", "Choose a campaign, please!");
             return;
         }
         this._call.getCampaignCreatedReport(this.searchDto)
             .subscribe(
                 res => {
                     this.data = res;
+                    setTimeout(() => this.loading = false, 1000);
                 },
                 err => console.log(err)
             )
     };
-    private showToast(type: NbComponentStatus, title: string, body: string) {
-        const config = {
-          status: type,
-          destroyByClick: this.destroyByClick,
-          duration: this.duration,
-          hasIcon: this.hasIcon,
-          position: this.position,
-          preventDuplicates: this.preventDuplicates,
-        };
-        const titleContent = title ? `${title}` : '';
-    
-        this.toastrService.show(
-          body,
-          `${titleContent}`,
-          config);
-      }
   }

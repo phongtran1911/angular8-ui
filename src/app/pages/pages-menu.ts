@@ -65,27 +65,27 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: 'All Rescues',
-    link: '/pages/rescue/1',
+    link: '/pages/rescuejob/allrescues',
     icon: 'pantone-outline'
   },
   {
     title: 'Validator pending',
-    link: '/pages/rescue/2',
+    link: '/pages/rescuejob/validator',
     icon: 'pantone-outline'
   },
   {
     title: 'Sales Agent pending',
-    link: '/pages/rescue/3',
+    link: '/pages/rescuejob/salesagent',
     icon: 'pantone-outline',
   },
   {
     title: 'Logistic pending',
-    link: '/pages/rescue/4',
+    link: '/pages/rescuejob/logistic',
     icon: 'pantone-outline'
   },
   {
     title: 'My Rescue',
-    link: '/pages/rescue/5',
+    link: '/pages/rescuejob/myrescue',
     icon: 'pantone-outline'
   }
 ];

@@ -20,6 +20,7 @@ import {
   NbToastrModule,
   NbWindowModule,
 } from '@nebular/theme';
+import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptorService } from './@core/Services/Token-Interceptor/token-interceptor.service';
 import { AuthService } from './@core/Services/Auth/auth.service';
 import { AuthGuard } from './@core/Services/Guard/auth.guard';
@@ -45,7 +46,7 @@ import { AuthGuard } from './@core/Services/Guard/auth.guard';
     }),
     CoreModule.forRoot(),
   ],
-  providers: [AuthService, AuthGuard, 
+  providers: [AuthService, AuthGuard, CookieService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

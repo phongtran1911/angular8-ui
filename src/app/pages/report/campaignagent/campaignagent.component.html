@@ -1,0 +1,30 @@
+<nb-card [nbSpinner]="loading" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+    <nb-card-header>
+        <div>
+            <span>Campain Created</span>
+        </div>
+        <nb-card-body>
+            <input nbInput placeholder="Date (from - to)" [nbDatepicker]="rangepicker" [(ngModel)]="date">
+            <nb-rangepicker #rangepicker></nb-rangepicker>
+            <nb-card-body>
+                <nb-select multiple placeholder="All Campaign" [(ngModel)]="searchDto.listCpId" style="min-width: 220px;">
+                    <nb-option *ngFor="let currentData of listCampaing" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
+                </nb-select>
+            </nb-card-body>
+            <nb-actions size="small" style="float: right;">
+                <nb-action (click)="searchByDto()" style="cursor: pointer;">
+                    <nb-icon class="action-icon" icon="search-outline"></nb-icon>
+                    <span>Search</span>
+                </nb-action>
+                <nb-action style="cursor: pointer;" (click)="export2Csv()">
+                    <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
+                    <span>Export Excel</span>
+                </nb-action>
+            </nb-actions>
+        </nb-card-body>
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

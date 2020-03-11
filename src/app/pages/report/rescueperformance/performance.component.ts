@@ -107,6 +107,7 @@ export class RescuePerformanceComponent implements OnInit {
   };
   listOrGroup;
   listCsAgent;
+  loading = false;
   ngOnInit(): any {
     this.date.start.setHours(0,0,0,0);
     this.date.end.setHours(23,59,59,999);    
@@ -114,6 +115,7 @@ export class RescuePerformanceComponent implements OnInit {
     this.getAllGroupByOrgId();
   }
   searchByDto() {
+        this.loading = true;
         this.searchDto.startDate = null;
         this.searchDto.endDate = null;
         if (this.date != null) {
@@ -129,7 +131,8 @@ export class RescuePerformanceComponent implements OnInit {
                 if(this.data != undefined)
                 {
                     this.source.load(this.data);
-                }              
+                }
+                setTimeout(() => this.loading = false, 1000);              
               },
               err => {
                 localStorage.removeItem('token')

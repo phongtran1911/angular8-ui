@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NbActionsModule, NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule, NbDatepickerModule, NbSelectModule } from '@nebular/theme';
+import { NbActionsModule, NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule, NbDatepickerModule, NbSelectModule, NbSpinnerModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -22,6 +22,7 @@ import { FsIconComponent } from './marketingsummary/marketingsummary.component';
     NbSelectModule,
     ngFormsModule,
     CommonModule,
+    NbSpinnerModule,
   ],
   declarations: [
     ...routedComponents,

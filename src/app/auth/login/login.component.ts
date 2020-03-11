@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../@core/Services/Auth/auth.service';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service'
 
 @Component({
   selector: 'ngx-login',
@@ -22,12 +23,13 @@ export class NgxLoginComponent implements OnInit{
   messages: string[];
   submitted: boolean;
   constructor(private auth: AuthService,
-    private router: Router){ };
+    private router: Router,
+    private cookies: CookieService){ };
   login() {
     this.auth.loginUser(this.user)
       .subscribe(
         res => {
-          localStorage.setItem('token', res.access_token);
+          localStorage.setItem('token', res.access_token);          
           this.router.navigate(['/pages'])
         },
         err => {

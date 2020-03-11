@@ -4,4 +4,8 @@
   nb-card {
     transform: translate3d(0, 0, 0);
   }
+  
+  ::ng-deep .response .ng2-smart-title {
+    width: 130px;
+  }
 }

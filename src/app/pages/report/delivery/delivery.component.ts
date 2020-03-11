@@ -136,12 +136,15 @@ export class DeliveryComponent implements OnInit {
   constructor(private _call: DeliveryService) {  
   }
   delivery;
+  loading = false;
   ngOnInit(): any {
+    this.loading = true;
     this._call.getDelivery({})
       .subscribe(
         res => {
           this.delivery = res.content;
           this.source.load(this.delivery);
+          setTimeout(() => this.loading = false, 1000);
         },
         err => {
           localStorage.removeItem('token')

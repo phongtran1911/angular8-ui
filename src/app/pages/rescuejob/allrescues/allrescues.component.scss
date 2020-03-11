@@ -1,0 +1,29 @@
+
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+    ::ng-deep .form {
+      display: flex;
+      flex-direction: column;
+  
+      .text-label {
+        margin-top: 1.5rem;
+      }
+    }
+    ::ng-deep .createDate .ng2-smart-title {
+      width: 130px;
+    }
+    ::ng-deep .updateDate .ng2-smart-title {
+      width: 130px;
+    }
+    ::ng-deep .lastmileReasonDetail .ng2-smart-title {
+      width: 200px;
+    }
+    ::ng-deep .ng2-smart-actions {
+      text-align: center;
+    }
+    ::ng-deep .ng2-smart-actions .form-control {
+      width: 15px;
+      display: inline;
+    }
+  }

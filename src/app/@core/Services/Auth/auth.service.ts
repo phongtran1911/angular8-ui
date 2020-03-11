@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../environments/environment';
 
 @Injectable()
@@ -9,7 +10,8 @@ export class AuthService {
   private _currentUser = `${environment.apiUrl}api/user/getCurrentUser`;
 
   constructor(private http: HttpClient,
-    private _router: Router) { }
+    private _router: Router,
+    private cookies: CookieService) { }
 
   loginUser(user) {
     return this.http.post<any>(this._loginUrl, user)
@@ -17,6 +19,7 @@ export class AuthService {
 
   logoutUser() {
     localStorage.removeItem('token')
+    this.cookies.delete('currentUser');
     this._router.navigate(['auth/login'])
     //window.location.href = '/login';
   }

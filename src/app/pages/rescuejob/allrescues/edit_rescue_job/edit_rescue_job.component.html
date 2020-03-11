@@ -1,0 +1,271 @@
+<nb-card>
+    <nb-card-body>
+        <div class="row">
+            <div class="col-md-12">
+              <nb-card class="inline-form-card">
+                <nb-card-header>Rescue Job detail</nb-card-header>
+                <nb-card-body>
+                  <form class="form-inline">
+                    
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">New Rescue Job ID </label>
+                            <div class="col-sm-9">
+                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.id"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Priority <span style="color:red">(*)</span></label>
+                            <div class="col-sm-9">
+                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.priority"></span>
+                            </div>
+                        </div>
+                    </div>  
+                
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">DO ID</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input nbInput type="text" name="doId" [(ngModel)]="rescueJob.deliveryOrder.doId" placeholder="Enter Text">                                    
+                                    <nb-actions size="medium"  style="cursor:pointer">
+                                        <nb-action icon="search-outline" (click)="findDataByDoId()" style="padding: 0;"></nb-action>
+                                    </nb-actions>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">DO Code</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input nbInput type="text" name="doCode" [(ngModel)]="rescueJob.deliveryOrder.doCode" placeholder="Enter Text">
+                                    <nb-actions size="medium"  style="cursor:pointer">
+                                        <nb-action icon="search-outline" (click)="findDataByDoCode()" style="padding: 0;"></nb-action>
+                                    </nb-actions>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Tracking Code</label>
+                            <div class="col-sm-9">
+                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.trackingCode"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Fulfillment</label>
+                            <div class="col-sm-9">
+                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.fulfilment.name"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">FFM Code</label>
+                            <div class="col-sm-9">
+                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.ffmCode"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Lastmile</label>
+                            <div class="col-sm-9">
+                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.lastmile.name"></label>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Rescue Comment </label>
+                            <div class="col-sm-10">
+                                <textarea rows="4" style="width:100%" [(ngModel)]="rescueJob.jobComment" name="jobComment"></textarea>
+                            </div>
+                        </div>
+                    </div>               
+                  </form>
+                </nb-card-body>
+              </nb-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <nb-card class="inline-form-card">
+                    <nb-card-header>Delivery status</nb-card-header>
+                    <nb-card-body>
+                        <form class="form-inline">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">DO Status </label>
+                                    <div class="col-sm-9">
+                                        <!--Trường statusShowView tạm thời thay thế status vì chưa thể mapping-->
+                                        <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.statusShowView.name"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">FFM Status <span style="color:red"></span></label>
+                                    <div class="col-sm-9">
+                                        <!-- <ui-select [(ngModel)]="rescueJob.ffmReasonDetail" on-select="getFFMSubStatus($select.selected)" on-remove="getFFMSubStatus($select.selected)" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                            <ui-select-match allow-clear="true" placeholder="Select FFM status ...">{{$select.selected}}</ui-select-match>
+                                            <ui-select-choices repeat="data in listFFMStatus | filter: $select.search">
+                                                <div class="bold" [textContent]-html="data | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select> -->
+                                        <!-- <nb-select multiple placeholder="Select FFM status ..." [(ngModel)]="rescueJob.ffmReasonDetail">
+                                            <nb-option *ngFor="let currentData of listCampaing" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
+                                        </nb-select> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Lastmile status <span style="color:red">(*)</span></label>
+                                    <div class="col-sm-9">
+                                        <nb-select multiple placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReason" (ngModelChange)="getLastmileSubStatus()" name="lastmileReason">
+                                            <nb-option *ngFor="let currentData of listLastmileStatus" value="{{ currentData }}">{{ currentData }}</nb-option>
+                                        </nb-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">FFM Sub status <span style="color:red"></span></label>
+                                    <div class="col-sm-9">
+                                        <!-- <ui-select [(ngModel)]="rescueJob.ffmReasonDetail" sortable="true" close-on-select="true" style="width: 100% !important;">
+                                            <ui-select-match allow-clear="true" placeholder="Select FFM Sub status ...">{{$select.selected}}</ui-select-match>
+                                            <ui-select-choices repeat="data in listFFMSubStatus | filter: $select.search">
+                                                <div class="bold" [textContent]-html="data | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Lastmile substatus <span style="color:red">(*)</span></label>
+                                    <div class="col-sm-9">
+                                        <nb-select multiple placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReasonDetail"  name="lastmileReasonDetail">
+                                            <nb-option *ngFor="let currentData of listLastmileSubStatus" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
+                                        </nb-select>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </form>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <nb-card class="inline-form-card">
+                    <nb-accordion>
+                        <nb-accordion-item>
+                            <nb-accordion-item-header>
+                                Order info (SO – )
+                            </nb-accordion-item-header>
+                            <nb-accordion-item-body>
+                                <form class="form-inline">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <!-- <ng2-smart-table [settings]="settings" [source]="source">
+                                            </ng2-smart-table> -->
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 300px;">Product</th>
+                                                        <th style="width: 25%;">Price</th>
+                                                        <th style="width: 25%;">Quantity</th>
+                                                        <th style="width: 25%;">Cost</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of listOdSaleOrderItem">
+                                                        <td class="text-center"><span [textContent]="item.product.name"></span></td>
+                                                        <td class="text-center">{{item.price | number}} {{currencyUnit}}</td>
+                                                        <td class="text-center">{{item.quantity | number}} </td>
+                                                        <td class="text-center">{{item.amount | number}} {{currencyUnit}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label margin-top-10 bold">Total cost </label>
+                                            <div class="col-sm-9 margin-top-10">
+                                                <span class="bold" style="color:#d32f2f"> {{rescueJob.deliveryOrder.amountcod | number}} {{currencyUnit}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </nb-accordion-item-body>
+                        </nb-accordion-item>
+                    </nb-accordion>
+                </nb-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <nb-card class="inline-form-card">
+                    <nb-accordion>
+                        <nb-accordion-item>
+                            <nb-accordion-item-header>
+                                Lead info
+                            </nb-accordion-item-header>
+                            <nb-accordion-item-body>
+                                <form class="form-inline">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label bold">Client Name </label>
+                                            <div class="col-sm-9">
+                                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.customerName"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label bold">Phone number </label>
+                                            <div class="col-sm-9">
+                                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.customerPhone"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label bold">Address </label>
+                                            <div class="col-sm-9">
+                                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.customerAddress"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>                                
+                            </nb-accordion-item-body>
+                        </nb-accordion-item>
+                    </nb-accordion>
+                </nb-card>
+            </div>
+        </div>
+    </nb-card-body>
+    <nb-card-footer>
+        <!-- <a href="https://hubs.ly/H0n4_1m0" target="_blank">See all Eva Icons</a> -->
+
+        <div style="float: right;">            
+            <button nbButton hero status="primary" (click)="Back()">Back</button>
+            <button nbButton hero status="success" (click)="save()">Save</button>
+        </div>        
+    </nb-card-footer>
+</nb-card>

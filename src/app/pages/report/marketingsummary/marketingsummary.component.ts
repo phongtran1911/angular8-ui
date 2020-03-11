@@ -41,6 +41,7 @@ export class MarketingSummaryComponent implements OnInit {
   };
   dataJsonconvert = [];
   data = null;
+  loading = false;
   ngOnInit(): any {
     this.date.start.setHours(0,0,0,0);
     this.date.end.setHours(23,59,59,999);    
@@ -87,6 +88,7 @@ export class MarketingSummaryComponent implements OnInit {
     a.remove();
   }
   searchByDto = function() {
+    this.loading = true;
     this.dataJsonconvert = [];
     this.searchDto.startDate = null;
     this.searchDto.endDate = null;
@@ -124,7 +126,8 @@ export class MarketingSummaryComponent implements OnInit {
                   children: childrenArray
                 };
                 this.dataJsonconvert.push(dataNew);   
-                this.dataSource = this.dataSourceBuilder.create(this.dataJsonconvert);              
+                this.dataSource = this.dataSourceBuilder.create(this.dataJsonconvert);   
+                setTimeout(() => this.loading = false, 1000);               
               }
             }
           },

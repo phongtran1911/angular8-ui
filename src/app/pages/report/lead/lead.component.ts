@@ -88,18 +88,20 @@ export class LeadComponent implements OnInit {
       },
     },
   };
-
+  loading = false;
   source: LocalDataSource = new LocalDataSource();
 
   constructor(private _call: LeadService) {  
   }
   leads;
   ngOnInit(): any {
+    this.loading = true;
     this._call.getLead({})
       .subscribe(
         res => {
           this.leads = res.content;
           this.source.load(this.leads);
+          setTimeout(() => this.loading = false, 1000);
         },
         err => {
           localStorage.removeItem('token')

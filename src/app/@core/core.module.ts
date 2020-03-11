@@ -11,6 +11,7 @@ import {
   PlayerService,
   SeoService,
   StateService,
+  FunctionAllService
 } from './utils';
 import { UserData } from './data/users';
 import { ElectricityData } from './data/electricity';
@@ -58,6 +59,9 @@ import { RescuePerformanceService } from './Services/Report/rescueperformance.se
 import { MarketingSummaryService } from './Services/Report/marketingsummary.service';
 import { CampaignCreatedService } from './Services/Report/campaigncreated.service';
 import { CampaignUpdatedService } from './Services/Report/campaignupdated.service';
+import { CampaignAgentService } from './Services/Report/campaignagent.service';
+import { AllRescuesService } from './Services/RescueJob/allrescues.service';
+import { EditRescueJobService } from './Services/RescueJob/editrescuejob.service';
 
 const socialLinks = [
   {
@@ -149,6 +153,7 @@ export const NB_CORE_PROVIDERS = [
   PlayerService,
   SeoService,
   StateService,
+  FunctionAllService
 ];
 
 @NgModule({
@@ -175,7 +180,10 @@ export class CoreModule {
         RescuePerformanceService,
         MarketingSummaryService,
         CampaignCreatedService,
-        CampaignUpdatedService
+        CampaignUpdatedService,
+        CampaignAgentService,
+        AllRescuesService,
+        EditRescueJobService
       ],
     };
   }

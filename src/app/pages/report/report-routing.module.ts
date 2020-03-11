@@ -8,6 +8,7 @@ import { RescuePerformanceComponent } from './rescueperformance/performance.comp
 import { MarketingSummaryComponent } from './marketingsummary/marketingsummary.component';
 import { CampaignCreatedComponent } from './campaigncreated/campaigncreated.component';
 import { CampaignUpdatedComponent } from './campaignupdated/campaignupdated.component';
+import { CampaignAgentComponent } from './campaignagent/campaignagent.component';
 
 
 const routes: Routes = [{
@@ -37,6 +38,10 @@ const routes: Routes = [{
     {
       path: 'campaignupdated',
       component: CampaignUpdatedComponent
+    },
+    {
+      path: 'campaignagent',
+      component: CampaignAgentComponent
     }
   ],
 }];
@@ -54,5 +59,6 @@ export const routedComponents = [
   RescuePerformanceComponent,
   MarketingSummaryComponent,
   CampaignCreatedComponent,
-  CampaignUpdatedComponent
+  CampaignUpdatedComponent,
+  CampaignAgentComponent
 ];
