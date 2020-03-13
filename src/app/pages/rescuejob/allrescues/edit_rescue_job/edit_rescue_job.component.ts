@@ -64,7 +64,7 @@ export class EditRescueJobComponent implements OnInit {
     };
     listOdSaleOrderItem;
     Back() {
-        this._router.navigate(['/pages/rescuejob/allrescues/tab1']);
+        this._router.navigate(['/pages/rescuejob/allrescues']);
     }
     listLastmileStatus;
     list
@@ -73,13 +73,6 @@ export class EditRescueJobComponent implements OnInit {
         this._call.getLastMileStatus()
             .subscribe(
                 res => {
-                    // this.list = res
-                    // for(let i = 0; i < this.list.length; i++)
-                    // {
-                    //     var dataPush = {id: i++, name: this.list[i]};
-                    //     this.listLastmileStatus.push(dataPush);
-                    // }
-                    // console.log(this.listLastmileStatus);
                     this.listLastmileStatus = res
                 },
                 err => console.log(err)

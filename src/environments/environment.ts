@@ -10,7 +10,7 @@
 export const environment = {
   production: false,
   currentUser: [],
-  apiUrl: 'http://27.71.226.210:9103/tms/',
+  apiUrl: 'http://183.91.11.164:9091/tms/',
   urlPages: {
     lead: {
       leadreport: 'api/reportincominglead/search/1/25'
@@ -46,6 +46,18 @@ export const environment = {
       rescuesjob: 'api/rescuejob/search/1/25',
       userfullname: 'api/user/search/1/10',
       saveRescueUser: 'api/rescuejob/addAgent/',
+      allrcstatusbytype: 'api/rcStatus/getAllRcStatusByType/',
+      allsubstatusbytype: 'api/rcSubStatus/getAllSubStatusByType/',
+      checkById: 'api/rescuejob/check/',
+      ListRescueHistory: 'api/rescuejobactivity/searchByDto',
+      ListSaleOrder: 'api/odSaleOrderItem/searchByDto',
+      ListDeliveryOrder: 'api/odDoNew/searchByDto',
+      allbpPartner: 'api/partner/page/',
+      listuser: 'api/user/listUser',
+      LastmileStatusAndLastmileSubStatus: 'api/rescuejob/updateLastmileStatusAndLastmileSubStatus',
+      saveComment: 'api/rescuejob/saveComment',
+      CsStatusByRescueJobStatus: 'api/rcStatus/getCsStatusByRescueJobStatus/',
+      saveRescueJobActivity: 'api/rescuejobactivity/add'
     },
     edit_rescue_job: {
       lastmilestatus: 'api/rescuejob/getLastmileStatus',

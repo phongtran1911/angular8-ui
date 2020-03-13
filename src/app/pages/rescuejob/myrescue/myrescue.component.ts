@@ -10,4 +10,14 @@ export class MyRescueComponent implements OnInit {
     }
     ngOnInit(): void {
     }
+    workspaces = [{
+      id: 0,
+      name: 'My Rescue Job List',
+      delete: false,
+      isOpenActivity: false,
+      active: true
+    }];
+    trackByFn(index, item) {
+      return item.id;
+    }
 }

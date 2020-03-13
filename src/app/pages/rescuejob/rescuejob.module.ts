@@ -11,6 +11,7 @@ import { NbActionsModule,
    NbSpinnerModule,
    NbButtonModule,
    NbAccordionModule,
+   NbDialogModule,
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
@@ -18,10 +19,13 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { RescueJobRoutingModule, routedComponents } from './rescuejob-routing.module';
 import { FormsModule as ngFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ClickIDComponent } from './allrescues/tabcomponent/clickID.component';
+import { RescueJobActivityComponent } from './allrescues/rescueJob_activity/rescueJobactivity.component';
 
 @NgModule({
   imports: [    
     NbSpinnerModule,
+    NbDialogModule.forChild(),
     NbAccordionModule,
     NbCardModule,
     NbTreeGridModule,
@@ -38,6 +42,9 @@ import { CommonModule } from '@angular/common';
     NbRouteTabsetModule,
     ngFormsModule,
     CommonModule,  
+  ],
+  entryComponents: [
+    RescueJobActivityComponent,   
   ],
   declarations: [
     ...routedComponents,

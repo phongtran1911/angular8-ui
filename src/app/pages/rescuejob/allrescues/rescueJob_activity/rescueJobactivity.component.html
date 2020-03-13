@@ -1,0 +1,31 @@
+<nb-card>
+  <nb-card-header>Job Detail</nb-card-header>
+  <nb-card-body>
+    <input #name nbInput placeholder="Name">
+    <div class="row">
+      <div class="col-md-12">
+        <nb-card class="inline-form-card">
+          <nb-card-header>Job Information
+          </nb-card-header>
+          <nb-card-body>
+            <form class="form-inline">
+              <div class="col-md-6">
+                  <div class="form-group row">
+                      <span class="label col-sm-3 col-form-label">Rescue job ID </span>
+                      <div class="col-sm-9">
+                          <span class="bold" style="color:#d32f2f"
+                              [textContent]="currentRescueJobOpen.id"></span>
+                      </div>
+                  </div>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button class="cancel" nbButton status="danger" (click)="cancel()">Cancel</button>
+    <button nbButton status="success" (click)="submit(name.value)">Submit</button>
+  </nb-card-footer>
+</nb-card>

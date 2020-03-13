@@ -1,24 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { LocalDataSource } from 'ng2-smart-table';
-import { AllRescuesService } from '../../../../@core/Services/RescueJob/allrescues.service';
-import { FunctionAllService } from '../../../../@core/utils/index';
-import { NbWindowService } from '@nebular/theme';
-import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
+import { AllRescuesComponent } from '../allrescues.component';
 
 @Component({
     selector: 'ngx-tab1',
     templateUrl: './tab1.component.html',
   })
-export class Tab1Component implements OnInit {
+export class Tab1Component extends AllRescuesComponent implements OnInit {
     loading = false;
-    constructor(private _call: AllRescuesService,
-        private windowService: NbWindowService, 
-        private _func: FunctionAllService,
-        private cookies: CookieService,
-        private _router: Router) {  
-    }
     rescues;
     selectedRescue = [];
     userAssign;
@@ -210,7 +200,7 @@ export class Tab1Component implements OnInit {
         },
         id: {
           title: 'FFM_CODE',
-          type: 'string',
+          type: 'custom',
         },
         priority: {
           title: 'TRACKING_CODE',

@@ -70,17 +70,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: 'Validator pending',
-    link: '/pages/rescuejob/validator',
+    link: '/pages/rescuejob/allrescues/validator/1',
     icon: 'pantone-outline'
   },
   {
     title: 'Sales Agent pending',
-    link: '/pages/rescuejob/salesagent',
+    link: '/pages/rescuejob/allrescues/sale/2',
     icon: 'pantone-outline',
   },
   {
     title: 'Logistic pending',
-    link: '/pages/rescuejob/logistic',
+    link: '/pages/rescuejob/allrescues/logistic/3',
     icon: 'pantone-outline'
   },
   {
