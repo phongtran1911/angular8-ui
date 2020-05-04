@@ -4,7 +4,6 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { AllRescuesService } from '../../../@core/Services/RescueJob/allrescues.service';
 import { FunctionAllService } from '../../../@core/utils';
 import { NbWindowService, NbDialogService } from '@nebular/theme';
-import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RescueJobActivityComponent } from './rescueJob_activity/rescueJobactivity.component';
 
@@ -17,10 +16,9 @@ export class AllRescuesComponent implements OnInit {
   constructor(public _call: AllRescuesService,
     public windowService: NbWindowService,
     public _func: FunctionAllService,
-    public cookies: CookieService,
     public _router: Router,
     private route: ActivatedRoute,
-    private dialogService: NbDialogService ) {
+    private dialogService: NbDialogService) {
   }
   pageIndex = 1;
   pageSize = 10;
@@ -42,7 +40,7 @@ export class AllRescuesComponent implements OnInit {
       this.search(this.searchObject)
     }
     else {
-      this.search({})
+      this.search(this.searchObject)
     }
     this.getAllRcStatus(this.rcStatusType.rescueJob)
     this.getAllRcSubStatus(this.rcStatusType.rescueJob)
@@ -50,6 +48,8 @@ export class AllRescuesComponent implements OnInit {
     this.getAllReasonSubStatus(this.rcStatusType.reason)
     this.getAllBpPartner()
     this.getListUsers()
+    this.getLastmileStatus()
+    this.getReturnedReasons(2)
   }
   trackByFn(index, item) {
     return item.id;
@@ -102,9 +102,18 @@ export class AllRescuesComponent implements OnInit {
       for (var j = 0; j < this.listRescueJobOpen.length; j++) {
         if (this.listRescueJobOpen[j] != null && this.listRescueJobOpen[j].id == id) {
           this.currentRescueJobOpen = this.listRescueJobOpen[j];
-          console.log(this.currentRescueJobOpen);
           break;
         }
+      }
+    }
+  }
+  selectTab1(event) {
+    for (var i = 0; i < this.workspaces.length; i++) {
+      if (this.workspaces[i].name != event.tabTitle) {
+        this.workspaces[i].active = false
+      }
+      else {
+        this.workspaces[i].active = true
       }
     }
   }
@@ -144,12 +153,18 @@ export class AllRescuesComponent implements OnInit {
   }
   addNewWorkspace(rescueJobId) {
     if (this.workspaces != null && this.workspaces.length >= 0) {
+      for (let i = 0; i < this.workspaces.length; i++) {
+        if (i > 0) {
+          this.listRescueJobOpen = [];
+          this.workspaces.splice(i, 1);
+        }
+      }
       this.currentRescueJobOpen = {};
       if (rescueJobId != null && rescueJobId != '') {
         var tabId = "rescueJob" + rescueJobId; //this is id on tab content div where the 
         if (this.listRescueJobOpen != null && this.listRescueJobOpen.length == 0) {
           for (var i = 0; i < this.rescueJobs.length; i++) {
-            if (this.rescueJobs[i].id == rescueJobId) {
+            if (this.rescueJobs[i].rescueid == rescueJobId) {
 
               this._call.checkById(rescueJobId).subscribe(
                 res => {
@@ -195,6 +210,9 @@ export class AllRescuesComponent implements OnInit {
                         this.currentRescueJobOpen.listDeliveryOrder = res.content;
                         this.packageName = res.content[0].packageName;
                       });
+                    for (let i = 0; i < this.workspaces.length; i++) {
+                      this.workspaces[i].active = false;
+                    }
 
                     this.workspaces.push({
                       id: rescueJobId,
@@ -203,7 +221,7 @@ export class AllRescuesComponent implements OnInit {
                       delete: true,
                       active: true
                     });
-                    this.workspaces = this.workspaces;
+                    //this.workspaces = this.workspaces;
 
                     this.selectTab(this.currentRescueJobOpen.id);
                     // timeout(function () {
@@ -219,7 +237,7 @@ export class AllRescuesComponent implements OnInit {
           if (!this.checkRescueJobIsOpen(rescueJobId)) {
             if (this.workspaces.length <= 5) {
               for (var i = 0; i < this.rescueJobs.length; i++) {
-                if (this.rescueJobs[i].id == rescueJobId) {
+                if (this.rescueJobs[i].rescueid == rescueJobId) {
                   this._call.checkById(rescueJobId).subscribe(
                     res => {
 
@@ -264,7 +282,9 @@ export class AllRescuesComponent implements OnInit {
                             this.currentRescueJobOpen.listDeliveryOrder = res.content;
                             this.packageName = res.content[0].packageName;
                           });
-
+                        for (let i = 0; i < this.workspaces.length; i++) {
+                          this.workspaces[i].active = false;
+                        }
                         this.workspaces.push({
                           id: rescueJobId,
                           name: 'RescueJob ' + rescueJobId,
@@ -272,7 +292,7 @@ export class AllRescuesComponent implements OnInit {
                           isOpenActivity: false,
                           active: true
                         });
-                        this.workspaces = this.workspaces;
+                        //this.workspaces = this.workspaces;
                         this.selectTab(this.currentRescueJobOpen.id);
 
                         // timeout(function () {
@@ -303,27 +323,8 @@ export class AllRescuesComponent implements OnInit {
     }
   };
   currentRescueJobOpen;
-  removeTab(id, event) {
-    event.preventDefault();
-
-    //xử lý tab khi xóa đi thì xóa trong list
-    for (var i = 0; i < this.workspaces.length; i++) {
-      if (this.workspaces[i].id == id) {
-        this.workspaces.splice(i, 1);
-        if (this.listRescueJobOpen != null && this.listRescueJobOpen.length > 0) {
-          for (var j = 0; j < this.listRescueJobOpen.length; j++) {
-            if (this.listRescueJobOpen[j].id == id) {
-              this.listRescueJobOpen.splice(j, 1);
-              break;
-            }
-          }
-        }
-      }
-    }
-    //this.active = 0;
-  }
   loading = false;
-  rescueJobs;
+  rescueJobs = [];
   selectedRescue = [];
   userAssign;
   goEditRescue() {
@@ -402,11 +403,123 @@ export class AllRescuesComponent implements OnInit {
       )
   }
   refresh() {
-    this.search();
+    this.search(this.searchObject);
   }
   pageChange() {
-    this.search();
+    this.search(this.searchObject);
   }
+  onCustomAction(event, viewdetail) {
+    if ((this.currentUser.isRoleTeamLeader || this.currentUser.isRoleValidation || this.currentUser.isRoleManagement || this.currentUser.isRoleAgent
+      || this.currentUser.isRoleLogistic)
+      && !this.currentUser.isRoleCsAgent) {
+      this.addNewWorkspace(event.data.rescueid);
+    }
+    else {
+      this.viewDetail(event.data.rescueid, viewdetail);
+    }
+  }
+  source: LocalDataSource = new LocalDataSource();
+  settings = {
+    selectMode: 'multi',
+    actions: {
+      columnTitle: 'Actions',
+      add: false,
+      edit: false,
+      delete: false,
+      custom: [
+        { name: 'viewrecord', title: 'Detail' }
+      ],
+      filter: false
+    },
+    columns: {
+      create_date: {
+        title: 'Create Date',
+        type: 'string',
+        valuePrepareFunction: (value) => {
+          if (!value) return '';
+          return moment(value).format('DD/MM/YYYY HH:mm');
+        },
+        filterFunction: (cell?: any, search?: string) => {
+          if (search.length > 0) {
+            return moment(cell).format('DD/MM/YYYY HH:mm').match(search);
+          }
+        }
+      },
+      update_date: {
+        title: 'Update Date',
+        type: 'string',
+        valuePrepareFunction: (value) => {
+          if (!value) return '';
+          return moment(value).format('DD/MM/YYYY HH:mm');
+        },
+        filterFunction: (cell?: any, search?: string) => {
+          if (search.length > 0) {
+            return moment(cell).format('DD/MM/YYYY HH:mm').match(search);
+          }
+        }
+      },
+      rescueid: {
+        title: 'Rescue Job ID',
+        type: 'number'
+      },
+      csstatus: {
+        title: 'CS Status',
+        type: 'string',
+      },
+      subcsstatus: {
+        title: 'Sub CS Status',
+        type: 'string',
+      },
+      priority: {
+        title: 'Priority',
+        type: 'number',
+      },
+      csagentname: {
+        title: 'CS Agent Name',
+        type: 'string',
+      },
+      doid: {
+        title: 'DO ID',
+        type: 'number',
+      },
+      docode: {
+        title: 'DO Code',
+        type: 'string',
+      },
+      clientname: {
+        title: 'Client Name',
+        type: 'string',
+      },
+      clientphone: {
+        title: 'Client Phone',
+        type: 'number',
+      },
+      couriername: {
+        title: 'Courier Name',
+        type: 'string',
+      },
+      lastmilestatus: {
+        title: 'Lastmile Status',
+        type: 'string'
+      },
+      lastmilesubstatus: {
+        title: 'Lastmile Sub Status',
+        type: 'string'
+      },
+      comment: {
+        title: 'Comment',
+        type: 'string'
+      },
+      usernote: {
+        title: 'User Note',
+        type: 'string'
+      },
+      returnreason: {
+        title: 'Return Reason',
+        type: 'string'
+      }
+    },
+  };
   search(search) {
     this.loading = true;
     this.listSelected = [];
@@ -415,7 +528,30 @@ export class AllRescuesComponent implements OnInit {
     this._call.getRescues(search)
       .subscribe(
         res => {
-          this.rescueJobs = res.content;
+          for (let i = 0; i < res.content.length; i++) {
+            let e = res.content[i];
+            var result = {
+              create_date: e.createDate,
+              update_date: e.updateDate,
+              rescueid: e.id,
+              csstatus: this.allRcStatus[e.jobStatus],
+              subcsstatus: this.allRcSubStatus[e.jobStatus + '_' + e.jobSubStatus],
+              priority: e.priority,
+              csagentname: e.assigned != null ? e.assigned.fullname : '',
+              doid: e.deliveryOrder.doId,
+              docode: e.deliveryOrder.doCode,
+              clientname: e.deliveryOrder.customerName,
+              clientphone: e.deliveryOrder.customerPhone,
+              couriername: e.deliveryOrder.lastmile.shortname,
+              lastmilestatus: e.lastmileReason,
+              lastmilesubstatus: e.lastmileReasonDetail,
+              comment: e.jobComment,
+              usernote: e.userNote,
+              returnreason: this.allReasonStatus[e.jobReason]
+            };
+            this.rescueJobs.push(result);
+          }
+          this.source.load(this.rescueJobs);
           this.totalItems = res.totalElements;
           setTimeout(() => this.loading = false, 1000);
         },
@@ -425,7 +561,7 @@ export class AllRescuesComponent implements OnInit {
         }
       )
   }
-  currentUser = JSON.parse(this.cookies.get('currentUser'));
+  currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   settingsUser = {
     actions: {
@@ -555,6 +691,7 @@ export class AllRescuesComponent implements OnInit {
   }
   editLastmileStatus() {
     if (this.currentRescueJobOpen != null && this.currentUser != null) {
+      this.getLastmileSubStatus(this.currentRescueJobOpen.lastmileReasonBefore);
       //check quyền nếu assigned trong job khác null thì cần quyền Supervisor (gồm 3 quyền: isRoleTeamLeader, isRoleValidation, isRoleManagement) thì sẽ được quyền comment
       if (this.currentRescueJobOpen.assigned != null &&
         (this.currentUser.isRoleTeamLeader || this.currentUser.isRoleValidation || this.currentUser.isRoleManagement || this.currentUser.isRoleAgent || this.currentUser.isRoleLogistic
@@ -718,7 +855,7 @@ export class AllRescuesComponent implements OnInit {
               } else {
                 this._func.showToast('info', 'Notification', 'Save comment success');
                 this.updateCurentRescueJob();
-                this.searchRescueJobs();
+                this.search(this.searchObject);
               }
             });
         }
@@ -839,7 +976,7 @@ export class AllRescuesComponent implements OnInit {
       res => {
         if (res != null) {
           if (res.result != null && res.caseResult == 0) {
-            open(dialog);
+            this.open2(dialog);
           }
           else {
             this._func.showToast('warning', 'Notification', res.textResult)
@@ -881,7 +1018,8 @@ export class AllRescuesComponent implements OnInit {
         }
       }
     }
-    this.active = 0;
+    //this.active = 0;
+    this.workspaces[0].active = true;
   }
   addList = function (data) {
     var isCheckAllCheckbox = true;
@@ -904,7 +1042,153 @@ export class AllRescuesComponent implements OnInit {
     this.listSelected.push(data);
 
   }
-  viewDetail(id) {
-    this.dialogService.open(RescueJobActivityComponent);
+  viewDetail(id, viewdetail) {
+    //this.dialogService.open(RescueJobActivityComponent);
+    this.rescueJob = {};
+    this.searchByDto.rescueJobId = id;
+    this.searchByDto.pageIndex = this.pageIndexList;
+    this.searchByDto.pageSize = this.pageSizeList;
+    this._call.getListRescueHistory(this.searchByDto).subscribe(
+      res => {
+        this.listRescueHistory = res.content;
+      });
+    this._call.getListSaleOrder(this.searchByDto).subscribe(
+      res => {
+        this.listSaleOrder = res.content;
+
+        for (var j = 0; j < res.totalElements; j++) {
+          for (var i = 0; i < this.listBpPartner.length; i++) {
+            if (this.listBpPartner[i].pnId == this.listSaleOrder[j].lead.agcId) {
+              this.listSaleOrder[j].partner = this.listBpPartner[i].shortname;
+            }
+          }
+          for (var i = 0; i < this.listUser.length; i++) {
+            if (this.listUser[i].userId == this.listSaleOrder[j].lead.agcId) {
+              this.listSaleOrder[j].partner = this.listUser[i].fullname;
+            }
+          }
+        }
+      });
+    this._call.getListDeliveryOrder(this.searchByDto).subscribe(
+      res => {
+        this.listDeliveryOrder = res.content;
+        this.packageName = res.content[0].packageName;
+      });
+    this._call.getRescueJobById(id).subscribe(
+      res => {
+        this.rescueJob = res;
+      }
+    )
+    this.windowService.open(
+      viewdetail,
+      {
+        title: 'Job Detail'
+      },
+    );
+
+  }
+  listRescueHistory;
+  listSaleOrder;
+  listDeliveryOrder;
+  rescueJob;
+  listLastmileStatus;
+  searchPriorityDto;
+
+  getLastmileStatus() {
+    this._call.getLastMileStatus()
+      .subscribe(
+        res => {
+          this.listLastmileStatus = res
+        },
+        err => console.log(err)
+      )
+  }
+  listLastmileSubStatus;
+  getLastmileSubStatus() {
+    this.searchPriorityDto = {};
+    this.currentRescueJobOpen.priority = 0;
+    this.currentRescueJobOpen.lastmileReasonDetail = '';
+    if (this.currentRescueJobOpen.lastmileReason != null && this.currentRescueJobOpen.lastmileReason != '') {
+      this.searchPriorityDto.statusName = this.currentRescueJobOpen.lastmileReason;
+
+      this._call.getPiorityByStatusName(this.searchPriorityDto).subscribe(
+        res => {
+          this.currentRescueJobOpen.priority = res;
+
+          this._call.getLastmileSubStatus(this.currentRescueJobOpen.lastmileReason).subscribe(
+            res => {
+              this.listLastmileSubStatus = res;
+              if (this.listLastmileSubStatus != null && this.listLastmileSubStatus.length > 0) {
+                this.currentRescueJobOpen.lastmileReasonDetail = this.listLastmileSubStatus[0];
+              }
+            });
+        });
+    }
+  }
+  csSubStatusActivity;
+  changeCsStatusActivity() {
+    if (this.currentRescueJobOpen.curentActive != null) {
+      this.currentRescueJobOpen.curentActive.newSubStatus = null;
+    }
+    if (this.currentRescueJobOpen.curentActive != null && this.currentRescueJobOpen.curentActive.newStatus != null) {
+      this._call.getCssubstatusbystatusid(this.currentRescueJobOpen.curentActive.newStatus).subscribe(
+        res => {
+          this.csSubStatusActivity = res;
+        });
+    }
+  };
+  returnedReasonsActivity;
+  getReturnedReasons(type) {
+    this._call.getCsStatusbyType(type).subscribe(
+      res => {
+        this.returnedReasonsActivity = res;
+      });
+  }
+  subReturnedReasonsActivity;
+  changeReturnedReasonsActivity() {
+    if (this.currentRescueJobOpen.curentActive != null) {
+      this.currentRescueJobOpen.curentActive.newSubReason = null;
+    }
+    if (this.currentRescueJobOpen.curentActive != null && this.currentRescueJobOpen.curentActive.newReason != null) {
+      this._call.getCssubstatusbystatusid(this.currentRescueJobOpen.curentActive.newReason).subscribe(
+        res => {
+          this.subReturnedReasonsActivity = res;
+        });
+    }
+  };
+  OpenRescueJob(takeRescueJob) {
+    this.windowService.open(
+      takeRescueJob,
+      {
+        title: 'Notification'
+      }
+    )
+  }
+  takeRescueJob() {
+    this.rescueJob.userNote = "Takes a Rescue Job";
+    this._call.takeRescueJob(this.rescueJob).subscribe(
+      res => {
+        if (res != null && res != '') {
+          this._func.showToast("info", "Success", "Take rescues job success.");
+          this.refresh();
+        }
+        else {
+          this.rescueJob.userNote = "";
+          this._func.showToast("danger", "Notification", "This rescue job has been assigned to others.");
+        }
+      }
+    )
+  }
+  myBlobObject;
+  exportReport() {
+    this._call.getExport(this.searchObject)
+        .subscribe(
+          res => {
+            this.myBlobObject = new Blob([res], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+          },
+          err => {
+            this.myBlobObject = [];
+          }
+        )
   }
 }

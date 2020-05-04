@@ -2,7 +2,13 @@
   <nb-card-header>
     <div>
       <span>Leads</span>
-      <button class="btn btn-primary" (click)="export2Csv()" style="float: right;">Export</button>
+      <nb-actions size="small" style="float: right;" (click)="export()">
+        <nb-action style="cursor: pointer;">
+            <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
+            <!-- <span>Export Excel</span> -->
+            <span file-name="'Lead.xls'" file-download="myBlobObject">Export</span>
+        </nb-action>
+      </nb-actions>
     </div>
   </nb-card-header>
 

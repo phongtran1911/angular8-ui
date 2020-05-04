@@ -6,7 +6,6 @@ import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../@core/Services/Auth/auth.service';
-import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'ngx-header',
@@ -48,8 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
-              private _auth: AuthService,
-              private cookies: CookieService) {
+              private _auth: AuthService) {
   }
 
   ngOnInit() {
@@ -83,12 +81,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
               .subscribe(
                 res => {
                   localStorage.setItem('userId', res.userId); 
-                  this.cookies.set('currentUser', JSON.stringify(res));
+                  //console.log(res);
+                  localStorage.setItem('currentUser', JSON.stringify(res));
                   this.userInfo = res;                              
                 },
                 err => {
                   localStorage.removeItem('token')
-                  this.cookies.delete('currentUser')
+                  localStorage.removeItem('currentUser');
                   window.location.href = 'auth/login';
                 }    
               );

@@ -2,7 +2,12 @@
   <nb-card-header>
     <div>
       <span>Delivery Report</span>
-      <button class="btn btn-primary" (click)="export2Csv()" style="float: right;">Export</button>
+      <nb-actions size="small" style="float: right;">
+        <nb-action style="cursor: pointer;" (click)="export2Csv()">
+            <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
+            <span>Export Excel</span>
+        </nb-action>
+      </nb-actions>
     </div>
   </nb-card-header>
 

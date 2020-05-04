@@ -9,7 +9,7 @@
                     
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">New Rescue Job ID </label>
+                            <span class="label col-sm-3 col-form-label">New Rescue Job ID </span>
                             <div class="col-sm-9">
                                 <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.id"></span>
                             </div>
@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Priority <span style="color:red">(*)</span></label>
+                            <span class="label col-sm-3 col-form-label">Priority <span style="color:red">(*)</span></span>
                             <div class="col-sm-9">
                                 <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.priority"></span>
                             </div>
@@ -26,7 +26,7 @@
                 
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">DO ID</label>
+                            <span class="label col-sm-3 col-form-label">DO ID</span>
                             <div class="col-sm-9">
                                 <div class="input-group">
                                     <input nbInput type="text" name="doId" [(ngModel)]="rescueJob.deliveryOrder.doId" placeholder="Enter Text">                                    
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">DO Code</label>
+                            <span class="label col-sm-3 col-form-label">DO Code</span>
                             <div class="col-sm-9">
                                 <div class="input-group">
                                     <input nbInput type="text" name="doCode" [(ngModel)]="rescueJob.deliveryOrder.doCode" placeholder="Enter Text">
@@ -54,17 +54,17 @@
                 
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Tracking Code</label>
+                            <span class="label col-sm-3 col-form-label">Tracking Code</span>
                             <div class="col-sm-9">
-                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.trackingCode"></label>
+                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.trackingCode"></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Fulfillment</label>
+                            <span class="label col-sm-3 col-form-label">Fulfillment</span>
                             <div class="col-sm-9">
-                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.fulfilment.name"></label>
+                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.fulfilment.name"></span>
                             </div>
                         </div>
                     </div>
@@ -72,24 +72,24 @@
                 
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">FFM Code</label>
+                            <span class="label col-sm-3 col-form-label">FFM Code</span>
                             <div class="col-sm-9">
-                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.ffmCode"></label>
+                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.ffmCode"></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Lastmile</label>
+                            <span class="label col-sm-3 col-form-label">Lastmile</span>
                             <div class="col-sm-9">
-                                <label class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.lastmile.name"></label>
+                                <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.lastmile.name"></span>
                             </div>
                         </div>
                     </div>
                 
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Rescue Comment </label>
+                            <span class="label col-sm-2 col-form-label">Rescue Comment </span>
                             <div class="col-sm-10">
                                 <textarea rows="4" style="width:100%" [(ngModel)]="rescueJob.jobComment" name="jobComment"></textarea>
                             </div>
@@ -108,7 +108,7 @@
                         <form class="form-inline">
                             <div class="col-md-12">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">DO Status </label>
+                                    <span class="label col-sm-3 col-form-label">DO Status </span>
                                     <div class="col-sm-9">
                                         <!--Trường statusShowView tạm thời thay thế status vì chưa thể mapping-->
                                         <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.statusShowView.name"></span>
@@ -117,7 +117,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">FFM Status <span style="color:red"></span></label>
+                                    <span class="label col-sm-3 col-form-label">FFM Status <span style="color:red"></span></span>
                                     <div class="col-sm-9">
                                         <!-- <ui-select [(ngModel)]="rescueJob.ffmReasonDetail" on-select="getFFMSubStatus($select.selected)" on-remove="getFFMSubStatus($select.selected)" sortable="true" close-on-select="true" style="width: 100% !important;">
                                             <ui-select-match allow-clear="true" placeholder="Select FFM status ...">{{$select.selected}}</ui-select-match>
@@ -125,17 +125,17 @@
                                                 <div class="bold" [textContent]-html="data | highlight: $select.search"></div>
                                             </ui-select-choices>
                                         </ui-select> -->
-                                        <!-- <nb-select multiple placeholder="Select FFM status ..." [(ngModel)]="rescueJob.ffmReasonDetail">
-                                            <nb-option *ngFor="let currentData of listCampaing" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
-                                        </nb-select> -->
+                                        <nb-select placeholder="Select FFM status ..." [(ngModel)]="rescueJob.ffmReasonDetail" name="ffmReasonDetail">
+                                            <nb-option value=""></nb-option>
+                                        </nb-select>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Lastmile status <span style="color:red">(*)</span></label>
+                                    <span class="label col-sm-3 col-form-label">Lastmile status <span style="color:red">(*)</span></span>
                                     <div class="col-sm-9">
-                                        <nb-select multiple placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReason" (ngModelChange)="getLastmileSubStatus()" name="lastmileReason">
+                                        <nb-select placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReason" (ngModelChange)="getLastmileSubStatus()" name="lastmileReason">
                                             <nb-option *ngFor="let currentData of listLastmileStatus" value="{{ currentData }}">{{ currentData }}</nb-option>
                                         </nb-select>
                                     </div>
@@ -143,7 +143,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">FFM Sub status <span style="color:red"></span></label>
+                                    <span class="label col-sm-3 col-form-label">FFM Sub status <span style="color:red"></span></span>
                                     <div class="col-sm-9">
                                         <!-- <ui-select [(ngModel)]="rescueJob.ffmReasonDetail" sortable="true" close-on-select="true" style="width: 100% !important;">
                                             <ui-select-match allow-clear="true" placeholder="Select FFM Sub status ...">{{$select.selected}}</ui-select-match>
@@ -151,15 +151,18 @@
                                                 <div class="bold" [textContent]-html="data | highlight: $select.search"></div>
                                             </ui-select-choices>
                                         </ui-select> -->
+                                        <nb-select placeholder="Select FFM Sub status ..." [(ngModel)]="rescueJob.ffmReasonDetail" name="ffmReasonDetail1">
+                                            <nb-option value=""></nb-option>
+                                        </nb-select>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Lastmile substatus <span style="color:red">(*)</span></label>
+                                    <span class="label col-sm-3 col-form-label">Lastmile substatus <span style="color:red">(*)</span></span>
                                     <div class="col-sm-9">
-                                        <nb-select multiple placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReasonDetail"  name="lastmileReasonDetail">
-                                            <nb-option *ngFor="let currentData of listLastmileSubStatus" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
+                                        <nb-select placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReasonDetail"  name="lastmileReasonDetail">
+                                            <nb-option *ngFor="let currentData of listLastmileSubStatus" value="{{ currentData }}">{{ currentData }}</nb-option>
                                         </nb-select>
                                     </div>
                                 </div>
@@ -205,8 +208,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label margin-top-10 bold">Total cost </label>
-                                            <div class="col-sm-9 margin-top-10">
+                                            <span class="label col-sm-3 col-form-label">Total cost </span>
+                                            <div class="col-sm-9">
                                                 <span class="bold" style="color:#d32f2f"> {{rescueJob.deliveryOrder.amountcod | number}} {{currencyUnit}}</span>
                                             </div>
                                         </div>
@@ -230,7 +233,7 @@
                                 <form class="form-inline">
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label bold">Client Name </label>
+                                            <span class="label col-sm-3 col-form-label">Client Name </span>
                                             <div class="col-sm-9">
                                                 <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.customerName"></span>
                                             </div>
@@ -238,7 +241,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label bold">Phone number </label>
+                                            <span class="label col-sm-3 col-form-label">Phone number </span>
                                             <div class="col-sm-9">
                                                 <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.customerPhone"></span>
                                             </div>
@@ -246,7 +249,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label bold">Address </label>
+                                            <span class="label col-sm-3 col-form-label">Address </span>
                                             <div class="col-sm-9">
                                                 <span class="bold" style="color:#d32f2f" [textContent]="rescueJob.deliveryOrder.customerAddress"></span>
                                             </div>

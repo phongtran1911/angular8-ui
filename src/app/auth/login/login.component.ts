@@ -29,7 +29,20 @@ export class NgxLoginComponent implements OnInit{
     this.auth.loginUser(this.user)
       .subscribe(
         res => {
-          localStorage.setItem('token', res.access_token);          
+          localStorage.setItem('token', res.access_token); 
+          this.auth.getCurrentUser()
+              .subscribe(
+                res => {
+                  localStorage.setItem('userId', res.userId); 
+                  //console.log(res);
+                  localStorage.setItem('currentUser', JSON.stringify(res));                             
+                },
+                err => {
+                  localStorage.removeItem('token')
+                  localStorage.removeItem('currentUser');
+                  window.location.href = 'auth/login';
+                }    
+              );         
           this.router.navigate(['/pages'])
         },
         err => {

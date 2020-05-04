@@ -1,9 +1,8 @@
 <nb-card>
     <!-- <nb-route-tabset [tabs]="tabs"></nb-route-tabset> -->
-    <nb-tabset>
+    <nb-tabset (changeTab)="selectTab1($event)">
         <nb-tab tabTitle="{{workspace.name}}" *ngFor="let workspace of workspaces; trackBy:trackByFn;"
-            tabId="'res'+workspace.id" selectTab="selectTab(workspace.id)"
-            tabIcon="{{workspace.id != 0 ? 'close-outline' : ''}}">
+            tabId="'res'+workspace.id" selectTab="selectTab(workspace.id)" [active]="workspace.active">
             <nb-card [nbSpinner]="loading" nbSpinnerSize="giant" nbSpinnerStatus="primary" *ngIf="workspace.id == 0">
                 <nb-card-header>
                     <nb-card-body>
@@ -14,19 +13,19 @@
                                 <nb-icon class="action-icon" icon="plus-circle-outline"></nb-icon>
                                 <span>New job</span>
                             </nb-action>
-                            <nb-action (click)="openWindow(contentTemplate)" style="cursor: pointer;" *ngIf="listSelected.length > 0 && (currentUser.isRoleTeamLeader 
+                            <nb-action (click)="openWindow(contentTemplate)" style="cursor: pointer;" *ngIf="selectedRescue.length > 0 && (currentUser.isRoleTeamLeader 
                                     || currentUser.isRoleValidation 
                                     || currentUser.isRoleManagement ) 
                                     && !currentUser.isRoleCsAgent">
                                 <span>Assign</span>
                             </nb-action>
-                            <nb-action (click)="openWindowRelease(release)" style="cursor: pointer;" *ngIf="listSelected.length > 0 && (currentUser.isRoleTeamLeader 
+                            <nb-action (click)="openWindowRelease(release)" style="cursor: pointer;" *ngIf="selectedRescue.length > 0 && (currentUser.isRoleTeamLeader 
                                     || currentUser.isRoleValidation
                                     || currentUser.isRoleManagement) 
                                     && !currentUser.isRoleCsAgent">
                                 <span>Release</span>
                             </nb-action>
-                            <nb-action (click)="openWindowTake(take)" style="cursor: pointer;" *ngIf="listSelected.length > 0 && (currentUser.isRoleTeamLeader 
+                            <nb-action (click)="openWindowTake(take)" style="cursor: pointer;" *ngIf="selectedRescue.length > 0 && (currentUser.isRoleTeamLeader 
                                     || currentUser.isRoleCsAgent)">
                                 <span>Take</span>
                             </nb-action>
@@ -44,98 +43,8 @@
                     </nb-card-body>
                 </nb-card-header>
                 <nb-card-body>
-                    <!-- <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)">
-                    </ng2-smart-table> -->
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th *ngIf="!( currentUser.isRoleValidation
-                                        || currentUser.isRoleAgent
-                                        || currentUser.isRoleLogistic)" class="text-center"><input
-                                        (click)="selectAll()" [(ngModel)]="isCheckAll" type="checkbox"></th>
-                                <th class="text-center">Create Date</th>
-                                <th class="text-center">Update Date</th>
-                                <th class="text-center">Rescue Job ID</th>
-                                <th class="text-center">CS Status</th>
-                                <th class="text-center">Sub CS Status</th>
-                                <th class="text-center">Priority</th>
-                                <th class="text-center">CS Agent Name</th>
-                                <th class="text-center">DO ID</th>
-                                <th class="text-center">DO Code</th>
-                                <th class="text-center">Client Name</th>
-                                <th class="text-center">Client Phone</th>
-                                <th class="text-center">Courier Name</th>
-                                <th class="text-center">Lastmile Status</th>
-                                <th class="text-center">Lastmile Sub Status</th>
-                                <th class="text-center">Comment</th>
-                                <th class="text-center">User Note</th>
-                                <th class="text-center">Return Reason</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let e of rescueJobs">
-                                <td *ngIf="!( currentUser.isRoleValidation
-                                        || currentUser.isRoleAgent
-                                        || currentUser.isRoleLogistic)" class="text-center"><input (click)="addList(e)"
-                                        [(ngModel)]="selectedCheckbox[e.id]" type="checkbox"></td>
-                                <td class="text-center">{{e.createDate | date:"dd/MM/yyyy HH:mm"}}</td>
-                                <td class="text-center">{{e.updateDate | date:"dd/MM/yyyy HH:mm"}}</td>
-                                <td *ngIf="(currentUser.isRoleTeamLeader 
-                                        || currentUser.isRoleValidation
-                                        || currentUser.isRoleManagement
-                                        || currentUser.isRoleAgent
-                                        || currentUser.isRoleLogistic) 
-                                        && !currentUser.isRoleCsAgent" class="text-center">
-                                    <button nbButton status="primary" ghost
-                                        (click)="addNewWorkspace(e.id)">{{ e.id }}</button></td>
-                                <td *ngIf="!(currentUser.isRoleTeamLeader 
-                                        || currentUser.isRoleValidation
-                                        || currentUser.isRoleManagement
-                                        || currentUser.isRoleAgent
-                                        || currentUser.isRoleLogistic) 
-                                        && currentUser.isRoleCsAgent" class="text-center"> <button nbButton
-                                        status="primary" ghost (click)="viewDetail(e.id)">{{ e.id }}</button></td>
-                                <td class="text-center">{{allRcStatus[e.jobStatus]}}</td>
-                                <td class="text-left">{{allRcSubStatus[e.jobStatus+'_'+e.jobSubStatus]}}</td>
-                                <td class="text-center">{{e.priority}}</td>
-                                <td class="text-left">{{e.assigned != null ? e.assigned.fullname : ''}}</td>
-                                <td class="text-left">{{e.deliveryOrder.doId}}</td>
-                                <td class="text-left">{{e.deliveryOrder.doCode}}</td>
-                                <td class="text-left">{{e.deliveryOrder.customerName}}</td>
-                                <td class="text-left">{{e.deliveryOrder.customerPhone}}</td>
-                                <td class="text-left">{{e.deliveryOrder.lastmile.shortname}}</td>
-                                <td>
-                                    <p title="{{e.lastmileReason}}"
-                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 265px; margin: 0px 0px 0px 0px">
-                                        {{e.lastmileReason}}</p>
-                                </td>
-                                <td>
-                                    <p title="{{e.lastmileReasonDetail}}"
-                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 265px; margin: 0px 0px 0px 0px">
-                                        {{e.lastmileReasonDetail}}</p>
-                                </td>
-                                <td>
-                                    <p title="{{e.jobComment}}"
-                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 265px; margin: 0px 0px 0px 0px">
-                                        {{e.jobComment}}</p>
-                                </td>
-                                <td>
-                                    <p title="{{e.userNote}}"
-                                        style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 265px; margin: 0px 0px 0px 0px">
-                                        {{e.userNote}}</p>
-                                </td>
-                                <td class="text-left">{{allReasonStatus[e.jobReason]}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </nb-card-body>
-                <nb-card-body>
-                    <div class="text-right" style="padding-right: 0px">
-                        <ul max-size="5" previous-text="Trước" next-text="Sau" uib-pagination total-items="totalItems"
-                            items-per-page="pageSize" ng-model="pageIndex" ng-change="pageChange()"
-                            class="pagination-sm">
-                        </ul>
-                    </div>
+                    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)" (custom)="onCustomAction($event,viewdetail)">
+                    </ng2-smart-table>                   
                 </nb-card-body>
             </nb-card>
             <ng-template #contentTemplate>
@@ -164,20 +73,17 @@
                 </button>
             </ng-template>
             <nb-card *ngIf="workspace.id != 0">
-                <nb-actions size="small" style="padding-left: 87%;">
-                    <nb-action style="cursor: pointer;" (click)="newActivity()"
-                        *ngIf="(isOpenRescueJobActivity == false && currentRescueJobOpen.jobStatus != null && currentRescueJobOpen.jobStatus != 7)
-                    || (isOpenRescueJobActivity == false && currentRescueJobOpen.jobStatus != null && currentRescueJobOpen.jobStatus == 7 && (currentUser.isRoleTeamLeader || currentUser.isRoleValidation || currentUser.isRoleManagement) && !currentUser.isRoleCsAgent)">
-                        <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
-                        <span>New Activity</span>
-                    </nb-action>
-                                   
-                </nb-actions>
-                <button style="width:8%; margin-left: 90%" nbButton outline status="primary" (click)="back()"
-                    *ngIf="isOpenRescueJobActivity == true">Back</button>
                 <nb-action style="cursor: pointer;" (click)="removeTab(workspace.id, $event)">
                     <nb-icon class="action-icon" icon="close-outline" ></nb-icon>
                 </nb-action> 
+                <nb-action  size="small" style="cursor: pointer;left: 90%;" (click)="newActivity()"
+                    *ngIf="(isOpenRescueJobActivity == false && currentRescueJobOpen.jobStatus != null && currentRescueJobOpen.jobStatus != 7)
+                || (isOpenRescueJobActivity == false && currentRescueJobOpen.jobStatus != null && currentRescueJobOpen.jobStatus == 7 && (currentUser.isRoleTeamLeader || currentUser.isRoleValidation || currentUser.isRoleManagement) && !currentUser.isRoleCsAgent)">
+                    <nb-icon class="action-icon" icon="file-text-outline"></nb-icon>
+                    <span>New Activity</span>
+                </nb-action>
+                <button style="width:8%; margin-left: 90%" nbButton outline status="primary" (click)="back()"
+                    *ngIf="isOpenRescueJobActivity == true">Back</button>  
                 <div *ngIf="isOpenRescueJobActivity != true">
                     <div class="row">
                         <div class="col-md-12">
@@ -301,9 +207,9 @@
                                                         *ngIf="currentRescueJobOpen.isEditLastmileStatusAndLastmileSubStatus == false"
                                                         class="bold" style="color:#d32f2f"
                                                         [textContent]="currentRescueJobOpen.lastmileReason"></span>
-                                                    <!-- <nb-select *ngIf="currentRescueJobOpen.isEditLastmileStatusAndLastmileSubStatus == true" multiple placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReason" (ngModelChange)="getLastmileSubStatus()" name="lastmileReason">
+                                                    <nb-select *ngIf="currentRescueJobOpen.isEditLastmileStatusAndLastmileSubStatus == true" placeholder="Select lastmile status..." [(ngModel)]="currentRescueJobOpen.lastmileReason" (ngModelChange)="getLastmileSubStatus()" name="lastmileReason">
                                                         <nb-option *ngFor="let currentData of listLastmileStatus" value="{{ currentData }}">{{ currentData }}</nb-option>
-                                                    </nb-select> -->
+                                                    </nb-select>
                                                 </div>
                                             </div>
                                         </div>
@@ -325,9 +231,9 @@
                                                         *ngIf="currentRescueJobOpen.isEditLastmileStatusAndLastmileSubStatus == false"
                                                         class="bold" style="color:#d32f2f"
                                                         [textContent]="currentRescueJobOpen.lastmileReasonDetail"></span>
-                                                    <!-- <nb-select *ngIf="currentRescueJobOpen.isEditLastmileStatusAndLastmileSubStatus == true" multiple placeholder="Select lastmile status..." [(ngModel)]="rescueJob.lastmileReasonDetail"  name="lastmileReasonDetail">
-                                                        <nb-option *ngFor="let currentData of listLastmileSubStatus" value="{{ currentData.id }}">{{ currentData.name }}</nb-option>
-                                                    </nb-select> -->
+                                                    <nb-select *ngIf="currentRescueJobOpen.isEditLastmileStatusAndLastmileSubStatus == true" placeholder="Select lastmile status..." [(ngModel)]="currentRescueJobOpen.lastmileReasonDetail"  name="lastmileReasonDetail">
+                                                        <nb-option *ngFor="let currentData of listLastmileSubStatus" value="{{ currentData }}">{{ currentData }}</nb-option>
+                                                    </nb-select>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <nb-action
@@ -628,7 +534,7 @@
                                                 <span class="label col-sm-3 col-form-label">Activity type <span
                                                         style="color:red">(*)</span></span>
                                                 <div class="col-sm-9">
-                                                    <nb-select multiple placeholder="Select activityType..."
+                                                    <nb-select placeholder="Select activityType..."
                                                         [(ngModel)]="currentRescueJobOpen.curentActive.activityType"
                                                         name="activityType">
                                                         <nb-option *ngFor="let currentData of activityTypes"
@@ -689,11 +595,11 @@
                                                 <span class="label col-sm-3 col-form-label">CS status <span
                                                         style="color:red">(*)</span></span>
                                                 <div class="col-sm-9">
-                                                    <nb-select multiple placeholder="Select activityType..."
-                                                        [(ngModel)]="currentRescueJobOpen.curentActive.activityType"
-                                                        name="activityType">
-                                                        <nb-option *ngFor="let currentData of activityTypes"
-                                                            value="{{ currentData.id }}">{{ currentData.name }}
+                                                    <nb-select placeholder="Select CS status..."
+                                                        [(ngModel)]="currentRescueJobOpen.curentActive.newStatus"
+                                                        name="activityType" (ngModelChange)="changeCsStatusActivity()">
+                                                        <nb-option *ngFor="let currentData of currentRescueJobOpen.csStatusActivity"
+                                                            value="{{ currentData.id }}">{{ currentData.statusName }}
                                                         </nb-option>
                                                     </nb-select>
                                                 </div>
@@ -703,11 +609,12 @@
                                             <div class="form-group row">
                                                 <span class="label col-sm-3 col-form-label">Returned Reason</span>
                                                 <div class="col-sm-9">
-                                                    <nb-select multiple placeholder="Select activityType..."
-                                                        [(ngModel)]="currentRescueJobOpen.curentActive.activityType"
-                                                        name="activityType">
-                                                        <nb-option *ngFor="let currentData of activityTypes"
-                                                            value="{{ currentData.id }}">{{ currentData.name }}
+                                                    <nb-select placeholder="Select Returned Reason..."
+                                                        [(ngModel)]="currentRescueJobOpen.curentActive.newReason"
+                                                        name="activityType"
+                                                        (ngModelChange)="changeReturnedReasonsActivity()">
+                                                        <nb-option *ngFor="let currentData of returnedReasonsActivity"
+                                                            value="{{ currentData.id }}">{{ currentData.statusName }}
                                                         </nb-option>
                                                     </nb-select>
                                                 </div>
@@ -718,11 +625,12 @@
                                                 <span class="label col-sm-3 col-form-label">Sub-CS status <span
                                                         style="color:red">(*)</span></span>
                                                 <div class="col-sm-9">
-                                                    <nb-select multiple placeholder="Select activityType..."
-                                                        [(ngModel)]="currentRescueJobOpen.curentActive.activityType"
-                                                        name="activityType">
-                                                        <nb-option *ngFor="let currentData of activityTypes"
-                                                            value="{{ currentData.id }}">{{ currentData.name }}
+                                                    <nb-select placeholder="Select Sub-CS status..."
+                                                        [(ngModel)]="currentRescueJobOpen.curentActive.newSubStatus"
+                                                        name="activityType"
+                                                        >
+                                                        <nb-option *ngFor="let currentData of csSubStatusActivity"
+                                                            value="{{ currentData.id }}">{{ currentData.subStatusName }}
                                                         </nb-option>
                                                     </nb-select>
                                                 </div>
@@ -732,11 +640,11 @@
                                             <div class="form-group row">
                                                 <span class="label col-sm-3 col-form-label">Sub Returned Reason</span>
                                                 <div class="col-sm-9">
-                                                    <nb-select multiple placeholder="Select activityType..."
-                                                        [(ngModel)]="currentRescueJobOpen.curentActive.activityType"
+                                                    <nb-select placeholder="Select Sub Returned Reason..."
+                                                        [(ngModel)]="currentRescueJobOpen.curentActive.newSubReason"
                                                         name="activityType">
-                                                        <nb-option *ngFor="let currentData of activityTypes"
-                                                            value="{{ currentData.id }}">{{ currentData.name }}
+                                                        <nb-option *ngFor="let currentData of subReturnedReasonsActivity"
+                                                            value="{{ currentData.id }}">{{ currentData.subStatusName }}
                                                         </nb-option>
                                                     </nb-select>
                                                 </div>
@@ -782,6 +690,379 @@
                     </ng-template>
                 </div>
             </nb-card>
+            <ng-template #viewdetail>
+                <nb-card-body>
+                    <div style="max-height: 75vh;overflow-y: scroll;overflow-x: hidden;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nb-card class="inline-form-card">
+                                    <nb-card-header>Job Information
+                                    </nb-card-header>
+                                    <nb-card-body>
+                                        <form class="form-inline">
+        
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Rescue job ID </span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.id"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Priority <span
+                                                            style="color:red">(*)</span></span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.priority"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Client name</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.deliveryOrder?.customerName"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Phone number</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.deliveryOrder?.customerPhone"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+        
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Address</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.deliveryOrder?.customerAddress"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">DO code</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.deliveryOrder?.doCode"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+        
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">CS status</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="allRcStatus[rescueJob.jobStatus]"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Returned reason</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="allReasonStatus[rescueJob.jobReason]"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Sub CS status</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="allRcSubStatus[rescueJob.jobStatus+'_'+rescueJob.jobSubStatus]"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Sub returned reason</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="allReasonSubStatus[rescueJob.jobReason+'_'+rescueJob.jobSubReason]"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">FFM Status</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.ffmReason"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Lastmile status <span
+                                                            style="color:red">(*)</span></span>
+                                                    <div class="col-sm-9">
+                                                        <span                                                   
+                                                            class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.lastmileReason"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">FFM sub Status</span>
+                                                    <div class="col-sm-9">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.ffmReasonDetail"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-3 col-form-label">Lastmile substatus <span
+                                                            style="color:red">(*)</span></span>
+                                                    <div class="col-sm-9">
+                                                        <span                                                   
+                                                            class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.lastmileReasonDetail"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-2 col-form-label">Sale note </span>
+                                                    <div class="col-sm-10">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.odSaleOrder?.lead?.comment"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <span class="label col-sm-2 col-form-label">Comment</span>
+                                                    <div class="col-sm-10">
+                                                        <span class="bold" style="color:#d32f2f"
+                                                            [textContent]="rescueJob.jobComment"
+                                                            name="jobComment"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </nb-card-body>
+                                </nb-card>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nb-card class="inline-form-card">
+                                    <nb-card-header>Related DO</nb-card-header>
+                                    <nb-card-body>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Tracking code</th>
+                                                    <th scope="col">SO Id</th>
+                                                    <th scope="col">DO Id</th>
+                                                    <th scope="col">Customer name</th>
+                                                    <th scope="col">Phone number</th>
+                                                    <th scope="col">Address</th>
+                                                    <th scope="col">So status</th>
+                                                    <th scope="col">Shipping status</th>
+                                                    <th scope="col">Carrier</th>
+                                                    <th scope="col">Warehouse</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="listDeliveryOrder?.length == 0">
+                                                    <td style="text-align: center;" colspan="10">No Data</td>
+                                                </tr>
+                                                <tr *ngFor="let item of listDeliveryOrder">
+                                                    <td class="text-right">
+                                                        {{item.trackingCode}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.odSaleOrder.soId}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.doId}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.customerName}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.customerPhone}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <p title="{{item.customerAddress}}"
+                                                            style="float: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 500px; margin: 0px 0px 0px 0px">
+                                                            {{item.customerAddress}}
+                                                        </p>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.odSaleOrder.status.name}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.status.name}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.lastmile.shortname}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.fulfilment.shortname}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </nb-card-body>
+                                </nb-card>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nb-card class="inline-form-card">
+                                    <nb-card-header>Related SO</nb-card-header>
+                                    <nb-card-body>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Lead Id</th>
+                                                    <th scope="col">SO Id</th>
+                                                    <th scope="col">Lead name</th>
+                                                    <th scope="col">Phonenumber</th>
+                                                    <th scope="col">Product name</th>
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col">Agency</th>
+                                                    <th scope="col">Create date</th>
+                                                    <th scope="col">Update date</th>
+        
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="listSaleOrder?.length == 0">
+                                                    <td style="text-align: center;" colspan="9">No Data</td>
+                                                </tr>
+                                                <tr *ngFor="let item of listSaleOrder">
+                                                    <td class="text-right">
+                                                        {{item.lead.id}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.soId}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.lead.name}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.lead.phone}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{packageName}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.amount | number:0}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.partner}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.createDate | date:"dd/MM/yyyy HH:mm"}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{item.modifyDate| date:"dd/MM/yyyy HH:mm"}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </nb-card-body>
+                                </nb-card>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nb-card class="inline-form-card">
+                                    <nb-card-header>Activity History</nb-card-header>
+                                    <nb-card-body>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Update by</th>
+                                                    <th scope="col">CS Status</th>
+                                                    <th scope="col">Sub CS status</th>
+                                                    <th scope="col">Owner</th>
+                                                    <th scope="col">Contact name</th>
+                                                    <th scope="col">Contact phone</th>
+                                                    <th scope="col">Note</th>
+                                                    <th scope="col">Reason</th>
+                                                    <th scope="col">Sub Reason</th>
+        
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="listRescueHistory?.length == 0">
+                                                    <td style="text-align: center;" colspan="7">No Data</td>
+                                                </tr>
+                                                <tr *ngFor="let item of listRescueHistory">
+                                                    <td class="text-center">
+                                                        {{item.actTime | date :'dd/MM/yyyy HH:mm'}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{item.updateBy.fullname}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{allRcStatus[item.newStatus]}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{allRcSubStatus[item.newStatus+'_'+item.newSubStatus]}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{item.owner?.fullname}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{item.contactName}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{item.contactPhone}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{item.comment}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{allReasonStatus[item.newReason]}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        {{allReasonSubStatus[item.newReason+'_'+item.newSubReason]}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </nb-card-body>
+                                </nb-card>
+                            </div>
+                        </div>
+                    </div>                    
+                </nb-card-body>
+                <nb-card-footer>
+                    <div style="float: right;width: 200px;">     
+                        <button nbButton hero status="success" (click)="OpenRescueJob(takeRescueJob)" *ngIf="rescueJob.jobStatus != 7">Take</button>       
+                        <button nbButton hero status="primary" (click)="CancelTakeRescueJob()" style="margin-left: 5%;">Cancel</button>                        
+                    </div>        
+                </nb-card-footer>             
+            </ng-template>
+            <ng-template #takeRescueJob>
+                <span>Take Rescue</span>
+                <button nbButton outline class="btn btn-primary" style="float: right;" (click)="takeRescueJob()">
+                    Ok
+                </button>
+            </ng-template>
         </nb-tab>
     </nb-tabset>
 </nb-card>

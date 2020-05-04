@@ -9,83 +9,90 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     title: 'REPORT',
-    group: true,
-  },
-  {
-    title: 'Lead and Postback Report',
-    link: '/pages/report/lead',
-    icon: 'pantone-outline'
-  },
-  {
-    title: 'Delivery Report',
-    link: '/pages/report/delivery',
-    icon: 'pantone-outline'
-  },
-  {
-    title: 'Rescue Performance Report',
-    link: '/pages/report/rescueperformance',
     icon: 'pantone-outline',
-  },
-  {
-    title: 'Marketing report',
-    icon: 'pantone-outline',
+    data: 1,
     children: [
       {
-        title: 'Marketing Summary',
-        link: '/pages/report/marketingsummary'
+        title: 'Lead and Postback Report',
+        link: '/pages/report/lead',
+        data: 'lead',
       },
       {
-        title: 'Inhouse Marketing',
-        link: '/pages/report/marketinginhouse',
-        hidden: true
-      }
-    ]
-  },
-  {
-    title: 'Campaign Summary Report',
-    icon: 'pantone-outline',
-    children: [
-      {
-        title: 'By created date',
-        link: '/pages/report/campaigncreated'
+        title: 'Delivery Report',
+        link: '/pages/report/delivery',
+        data: 'delivery',
       },
       {
-        title: 'By updated date',
-        link: '/pages/report/campaignupdated'
+        title: 'Rescue Performance Report',
+        link: '/pages/report/rescueperformance',
+        data: 'performance',
       },
       {
-        title: 'By agent',
-        link: '/pages/report/campaignagent'
+        title: 'Marketing report',
+        data: 'marketing',
+        children: [
+          {
+            title: 'Marketing Summary',
+            link: '/pages/report/marketingsummary'
+          },
+          {
+            title: 'Inhouse Marketing',
+            link: '/pages/report/marketinginhouse',
+            hidden: true
+          }
+        ]
+      },
+      {
+        title: 'Campaign Summary Report',
+        data: 'Campaign',
+        children: [
+          {
+            title: 'By created date',
+            link: '/pages/report/campaigncreated',
+            data: 'create'
+          },
+          {
+            title: 'By updated date',
+            link: '/pages/report/campaignupdated',
+            data: 'update'
+          },
+          {
+            title: 'By agent',
+            link: '/pages/report/campaignagent'
+          }
+        ]
       }
     ]
   },
   {
     title: 'RESCUE JOB',
-    group: true,
-  },
-  {
-    title: 'All Rescues',
-    link: '/pages/rescuejob/allrescues',
-    icon: 'pantone-outline'
-  },
-  {
-    title: 'Validator pending',
-    link: '/pages/rescuejob/allrescues/validator/1',
-    icon: 'pantone-outline'
-  },
-  {
-    title: 'Sales Agent pending',
-    link: '/pages/rescuejob/allrescues/sale/2',
-    icon: 'pantone-outline',
-  },
-  {
-    title: 'Logistic pending',
-    link: '/pages/rescuejob/allrescues/logistic/3',
-    icon: 'pantone-outline'
-  },
-  {
-    title: 'My Rescue',
-    link: '/pages/rescuejob/myrescue',
-    icon: 'pantone-outline'
-  }
+    icon: 'pricetags-outline',
+    data: 'rescuejob',
+    children: [
+      {
+        title: 'All Rescues',
+        link: '/pages/rescuejob/allrescues',
+      },
+      {
+        title: 'Validator pending',
+        link: '/pages/rescuejob/allrescues/validator/1',
+        data: 'validator',
+      },
+      {
+        title: 'Sales Agent pending',
+        link: '/pages/rescuejob/allrescues/sale/2',
+        data: 'salepending',
+      },
+      {
+        title: 'Logistic pending',
+        link: '/pages/rescuejob/allrescues/logistic/3',
+        data: 'logistic',
+      },
+      {
+        title: 'My Rescue',
+        link: '/pages/rescuejob/myrescue',
+        data: 'myrescue'
+      }
+    ]
+  },  
 ];

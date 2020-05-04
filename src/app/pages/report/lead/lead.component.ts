@@ -109,6 +109,23 @@ export class LeadComponent implements OnInit {
         }
       )
   }
+  searchObject = {
+    createDateTo: "",
+    createDateFrom: "",
+    updateDateTo: "",
+    updateDateFrom: "",
+    leadId: "",
+    clickId: "",
+    customer: "",
+    phone: "",
+    payout:"",
+    subStatus: [],
+    postbackStatus: [],
+    postbackMessage: "",
+    cities: [],
+    advertiserIsOffers: [],
+    tmsStatuses: []
+  };
   export2Csv(): void {
     const replacer = (key, value) => value === null ? '' : value; // specify how you want to handle null values here
     const header = Object.keys(this.leads[0]);
@@ -125,5 +142,17 @@ export class LeadComponent implements OnInit {
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
+  }
+  myBlobObject;
+  export() {
+    this._call.getExport(this.searchObject)
+        .subscribe(
+          res => {
+            this.myBlobObject = new Blob([res], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+          },
+          err => {
+            this.myBlobObject = [];
+          }
+        )
   }
 }

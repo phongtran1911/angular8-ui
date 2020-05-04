@@ -19,6 +19,15 @@ export class AllRescuesService {
     private _LastmileStatusAndLastmileSubStatus = `${environment.apiUrl + environment.urlPages.allrescues.LastmileStatusAndLastmileSubStatus}`;
     private _CsStatusByRescueJobStatus = `${environment.apiUrl + environment.urlPages.allrescues.CsStatusByRescueJobStatus}`;
     private _saveRescueJobActivity = `${environment.apiUrl + environment.urlPages.allrescues.saveRescueJobActivity}`;
+    private _getMyRescues = `${environment.apiUrl + environment.urlPages.allrescues.myrescuejob}`;
+    private _getLastmilestatus = `${environment.apiUrl + environment.urlPages.allrescues.lastmilestatus}`;
+    private _getLastmilesubstatus = `${environment.apiUrl + environment.urlPages.allrescues.lastmilesubstatus}`;
+    private _getPiorityByStatusName = `${environment.apiUrl + environment.urlPages.allrescues.PiorityByStatusName}`;
+    private _getCssubstatusbystatusid = `${environment.apiUrl + environment.urlPages.allrescues.Cssubstatusbystatusid}`;
+    private _getCsStatusbyType = `${environment.apiUrl + environment.urlPages.allrescues.CsStatusbyType}`;
+    private _getRescueJobById = `${environment.apiUrl + environment.urlPages.allrescues.RescueJobById}`;
+    private _gettakeRescueJob = `${environment.apiUrl + environment.urlPages.allrescues.takeRescueJob}`;
+    private _getfile = `${environment.apiUrl + environment.urlPages.allrescues.getfile}`;
     constructor(private http: HttpClient) { }
     
     getRescues(searchDto) {
@@ -77,5 +86,32 @@ export class AllRescuesService {
     }
     saveRescueJobActivity(activity) {
         return this.http.post(this._saveRescueJobActivity, activity);
+    }
+    getMyRescues(dto, pageSize) {
+        return this.http.post(this._getMyRescues + pageSize,dto);
+    }
+    getLastMileStatus() {
+        return this.http.get(this._getLastmilestatus);
+    }
+    getLastmileSubStatus(status){
+        return this.http.post(this._getLastmilesubstatus,status);
+    }
+    getPiorityByStatusName(search) {
+        return this.http.post(this._getPiorityByStatusName, search);
+    }
+    getCssubstatusbystatusid(id) {
+        return this.http.get(this._getCssubstatusbystatusid + id);
+    }
+    getCsStatusbyType(id) {
+        return this.http.get(this._getCsStatusbyType + id);
+    }
+    getRescueJobById(id) {
+        return this.http.get(this._getRescueJobById + id);
+    }
+    takeRescueJob(dto) {
+        return this.http.post(this._gettakeRescueJob,dto);
+    }
+    getExport(searchDto) {
+        return this.http.post(this._getfile,searchDto,{headers:{'Content-type': 'application/json'},responseType : 'arraybuffer',});
     }
 }

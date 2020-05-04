@@ -67,7 +67,6 @@ export class EditRescueJobComponent implements OnInit {
         this._router.navigate(['/pages/rescuejob/allrescues']);
     }
     listLastmileStatus;
-    list
     searchPriorityDto;
     getLastmileStatus() {
         this._call.getLastMileStatus()

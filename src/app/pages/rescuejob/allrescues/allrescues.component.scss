@@ -28,3 +28,47 @@
     }
   }
 @import '../../../@theme/styles/themes.scss';
+
+@include nb-install-component() {
+  nb-card {
+    transform: translate3d(0, 0, 0);
+  }
+  ::ng-deep .create_date .ng2-smart-title {
+    width: 115px;
+  }
+  ::ng-deep .update_date .ng2-smart-title {
+    width: 115px;
+  }
+  ::ng-deep .csstatus .ng2-smart-title {
+    width: 66px;
+  }
+  ::ng-deep .clientname .ng2-smart-title {
+    width: 150px;
+  }
+  ::ng-deep .lastmilestatus .ng2-smart-title {
+    width: 300px;
+  }
+  ::ng-deep .usernote .ng2-smart-title {
+    width: 250px;
+  }
+  ::ng-deep .subcsstatus .ng2-smart-title {
+    width: 150px;
+  }
+  ::ng-deep .lastmilesubstatus .ng2-smart-title {
+    width: 300px;
+  }
+  ::ng-deep .returnreason .ng2-smart-title {
+    width: 100px;
+  }
+  ::ng-deep .ng2-smart-actions ng2-st-tbody-edit-delete {
+    display: none;
+  }
+  ::ng-deep .ng2-smart-actions a.ng2-smart-action {
+    font-size: 1rem !important;
+    color: blue;
+  }
+  ::ng-deep .full-screen-window{
+    max-height: 90vh;
+    overflow-y: scroll;
+  }
+}

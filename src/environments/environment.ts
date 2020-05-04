@@ -10,10 +10,11 @@
 export const environment = {
   production: false,
   currentUser: [],
-  apiUrl: 'http://183.91.11.164:9091/tms/',
+  apiUrl: 'http://27.71.226.210:9103/tms/',
   urlPages: {
     lead: {
-      leadreport: 'api/reportincominglead/search/1/25'
+      leadreport: 'api/reportincominglead/search/1/25',
+      leadexport: 'api/filedownload/downloadReportIncomingLead',
     },
     delivery: {
       deliveryreport: 'api/reportdelivery/search/1/25'
@@ -57,7 +58,16 @@ export const environment = {
       LastmileStatusAndLastmileSubStatus: 'api/rescuejob/updateLastmileStatusAndLastmileSubStatus',
       saveComment: 'api/rescuejob/saveComment',
       CsStatusByRescueJobStatus: 'api/rcStatus/getCsStatusByRescueJobStatus/',
-      saveRescueJobActivity: 'api/rescuejobactivity/add'
+      saveRescueJobActivity: 'api/rescuejobactivity/add',
+      myrescuejob: 'api/rescuejob/myrescuejob/search/1/',
+      lastmilestatus: 'api/rescuejob/getLastmileStatus',
+      lastmilesubstatus: 'api/rescuejob/getLastmileSubStatus',
+      PiorityByStatusName: 'api/rcActionMapping/getPiorityByStatusNameAndSubStatusName',
+      Cssubstatusbystatusid: 'api/rcSubStatus/getAllByStatusId/',
+      CsStatusbyType: 'api/rcStatus/getAllByType/',
+      RescueJobById: 'api/rescuejob/',
+      takeRescueJob: 'api/rescuejob/take',
+      getfile: 'api/filedownload/rescueJob/allRescueJob'
     },
     edit_rescue_job: {
       lastmilestatus: 'api/rescuejob/getLastmileStatus',
