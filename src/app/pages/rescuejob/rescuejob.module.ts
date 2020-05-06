@@ -19,7 +19,6 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { RescueJobRoutingModule, routedComponents } from './rescuejob-routing.module';
 import { FormsModule as ngFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ClickIDComponent } from './allrescues/tabcomponent/clickID.component';
 import { RescueJobActivityComponent } from './allrescues/rescueJob_activity/rescueJobactivity.component';
 
 @NgModule({

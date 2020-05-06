@@ -5,7 +5,6 @@ import { AllRescuesService } from '../../../@core/Services/RescueJob/allrescues.
 import { FunctionAllService } from '../../../@core/utils';
 import { NbWindowService, NbDialogService } from '@nebular/theme';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RescueJobActivityComponent } from './rescueJob_activity/rescueJobactivity.component';
 
 @Component({
   selector: 'ngx-allrescues',
@@ -17,8 +16,7 @@ export class AllRescuesComponent implements OnInit {
     public windowService: NbWindowService,
     public _func: FunctionAllService,
     public _router: Router,
-    private route: ActivatedRoute,
-    private dialogService: NbDialogService) {
+    private route: ActivatedRoute) {
   }
   pageIndex = 1;
   pageSize = 10;

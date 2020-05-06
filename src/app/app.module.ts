@@ -24,7 +24,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptorService } from './@core/Services/Token-Interceptor/token-interceptor.service';
 import { AuthService } from './@core/Services/Auth/auth.service';
 import { AuthGuard } from './@core/Services/Guard/auth.guard';
-
+import {APP_BASE_HREF} from '@angular/common';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -51,7 +51,8 @@ import { AuthGuard } from './@core/Services/Guard/auth.guard';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
-    }],
+    },
+    {provide: APP_BASE_HREF, useValue : '/' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {

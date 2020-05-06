@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { NgxAuthRoutingModule } from './auth-routing.module';
+import { AuthComponent } from './auth.component';
 import { NbAuthModule } from '@nebular/auth';
 import { NbAlertModule, NbButtonModule, NbCheckboxModule, NbInputModule } from '@nebular/theme';
 
@@ -25,6 +26,7 @@ import { NgxLoginComponent } from './login/login.component'; // <---
   ],
   declarations: [
     NgxLoginComponent, // <---
+    AuthComponent
   ],
 })
 export class NgxAuthModule {
